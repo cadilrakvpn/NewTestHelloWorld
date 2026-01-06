@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심심센터 - 무료 미니게임 & 결정 도구 포털</title>
+    <meta name="description" content="심심할 땐 심심센터! 오늘 뭐 먹지 고민 해결부터 반응속도 테스트까지. 무료로 즐기는 웹 도구와 미니게임 모음집입니다.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://randomroulette.shop/">
+    <meta property="og:title" content="심심센터 - 미니게임 & 꿀팁 저장소">
+    <meta property="og:description" content="결정 장애 해결 룰렛 & 순발력 테스트 게임을 지금 바로 즐겨보세요.">
+    <meta property="og:image" content="https://randomroulette.shop/MenuRoulette/image_01a344.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
+        crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 헤더 */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ff6b6b;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu a {
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: #ff6b6b;
+        }
+
+        /* 히어로 배너 */
+        .hero {
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1000px;
+            margin: -40px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 그리드 레이아웃 */
+        .grid-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            border-color: #ff6b6b;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #f1f3f5;
+        }
+
+        .card-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .badge-food {
+            background: #ffe3e3;
+            color: #e03131;
+        }
+
+        .badge-game {
+            background: #e7f5ff;
+            color: #1971c2;
+        }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .card p {
+            margin: 0 0 20px 0;
+            color: #868e96;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px 0;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 800;
+            color: #fff;
+            transition: opacity 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-red {
+            background: #ff6b6b;
+        }
+
+        .btn-blue {
+            background: #339af0;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* 블로그 섹션 */
+        .blog-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #343a40;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 24px;
+            background: #339af0;
+            border-radius: 3px;
+        }
+
+        .blog-list a {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f3f5;
+            transition: background 0.2s;
+        }
+
+        .blog-list a:hover {
+            background: #f8f9fa;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 0 -10px;
+            border-radius: 8px;
+        }
+
+        .blog-list a:last-child {
+            border-bottom: none;
+        }
+
+        .blog-icon {
+            font-size: 2rem;
+            margin-right: 20px;
+        }
+
+        .blog-content h3 {
+            margin: 0 0 6px 0;
+            font-size: 1.15rem;
+            color: #343a40;
+        }
+
+        .blog-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #adb5bd;
+        }
+
+        /* 푸터 */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #868e96;
+            font-size: 0.85rem;
+            padding: 40px 20px;
+            background: #343a40;
+        }
+
+        footer strong {
+            color: #dee2e6;
+        }
+
+        footer a {
+            color: #ced4da;
+            text-decoration: underline;
+        }
+
+        @media(max-width: 600px) {
+            .hero {
+                padding: 60px 20px 80px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            /* 모바일에서는 상단 메뉴 숨김 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/" class="logo">🎲 심심센터</a>
+        <nav class="nav-menu">
+            <a href="/MenuRoulette/index.html">메뉴룰렛</a>
+            <a href="/SnapMaster/index.html">스냅마스터</a>
+            <a href="/articles/lunch_tips.html">꿀팁블로그</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>지루할 땐, 심심센터!</h1>
+        <p>결정 장애 해결부터 두뇌 회전 게임까지<br>당신의 심심함을 무료로 처방해 드립니다.</p>
+    </div>
+
+    <div class="container">
+        <div class="grid-box">
+
+            <div class="card">
+                <img src="MenuRoulette/image_01a344.png" alt="점심 메뉴 추천 룰렛" class="card-img">
+                <div class="card-body">
+                    <div>
+                        <span class="card-badge badge-food">인기 도구</span>
+                        <h2>🍽️ 점심 메뉴 룰렛</h2>
+                        <p>한식, 중식, 일식, 분식... 오늘 뭐 먹을지 고민되시나요? 빅데이터 기반 랜덤 룰렛이 3초 만에 딱 정해드립니다.</p>
+                    </div>
+                    <a href="MenuRoulette/index.html" class="btn btn-red">룰렛 돌리기 👉</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="SnapMaster/snap_thumbnail.png" alt="반응속도 테스트 게임" class="card-img">
+                <div class="card-body">
+                    <div>
+                        <span class="card-badge badge-game">미니 게임</span>
+                        <h2>⚡ 스냅 마스터 (순발력)</h2>
+                        <p>내 반응속도는 상위 몇 %일까? 움직이는 타겟을 포착하는 순발력 테스트 게임입니다. 친구와 내기해보세요!</p>
+                    </div>
+                    <a href="SnapMaster/index.html" class="btn btn-blue">게임 시작하기 👉</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="blog-section">
+            <div class="section-title">📖 심심 타파 꿀팁 매거진</div>
+            <div class="blog-list">
+                <a href="articles/lunch_tips.html">
+                    <div class="blog-icon">🍱</div>
+                    <div class="blog-content">
+                        <h3>직장인 점심 메뉴 고르는 노하우 5가지</h3>
+                        <p>결정 장애를 해결하고 맛있는 점심 시간을 보내는 현실적인 팁을 공개합니다.</p>
+                    </div>
+                </a>
+                <a href="articles/reflex_tips.html">
+                    <div class="blog-icon">⏱️</div>
+                    <div class="blog-content">
+                        <h3>게임 반응속도(피지컬) 올리는 훈련법</h3>
+                        <p>FPS 게이머 필독! 동체시력과 반사신경을 깨우는 과학적인 훈련 가이드.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+            <p style="margin-bottom: 10px;"><strong>심심센터 (Simsim Center)</strong></p>
+            <p>
+                심심센터는 사용자의 무료한 시간을 즐거움으로 채워드리기 위해 제작된 웹 서비스 플랫폼입니다.
+                복잡한 설치나 회원가입 없이 누구나 즉시 이용할 수 있습니다.
+            </p>
+            <p
+                style="margin-top: 20px; border-top: 1px solid #555; padding-top: 20px; font-size: 0.8rem; color: #adb5bd;">
+                © 2026 Simsim Center. All rights reserved. | <a href="#">개인정보처리방침</a> | 문의: cadilrak@gmail.com
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

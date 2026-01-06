@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="google-site-verification" content="dqcP1sQ6SCTwUXZ0EBZQwFjeiaf9EA75cisIlsRCPbk" />
+    <meta name="naver-site-verification" content="51dee47b4215d0b0c48a3220f5bc82a29da95eea" />
+
+    <meta name="description"
+        content="오늘 점심, 저녁 메뉴가 고민되시나요? 한식, 중식, 일식 등 내 맘대로 후보 개수를 조절해서 돌려보세요. 결정 장애 해결을 위한 무료 메뉴 추천 룰렛!">
+    <meta name="keywords" content="메뉴추천, 룰렛, 점심메뉴, 저녁메뉴, 오늘뭐먹지, 랜덤메뉴, 음식월드컵">
+    <meta name="author" content="RandomRoulette">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://randomroulette.shop/MenuRoulette/">
+    <meta property="og:title" content="오늘 뭐 먹지? - 메뉴 추천 룰렛">
+    <meta property="og:description" content="결정 장애 해결! 원하는 개수만큼 후보를 뽑아 랜덤으로 메뉴를 정해드립니다.">
+    <meta property="og:image" content="https://randomroulette.shop/MenuRoulette/image_01a344.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="오늘 뭐 먹지? - 메뉴 추천 룰렛">
+    <meta name="twitter:description" content="내 맘대로 메뉴 개수 조절 가능! 지금 바로 돌려보세요.">
+    <meta name="twitter:image" content="https://randomroulette.shop/MenuRoulette/image_01a344.png">
+
+    <title>메뉴 룰렛 - 오늘 뭐 먹지? (확장판)</title>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- 디자인 스타일 --- */
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: #f1f3f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background: #fff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff6b6b;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .desc {
+            text-align: center;
+            color: #868e96;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .setting-box {
+            background: #e7f5ff;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #1971c2;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-box input {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #74c0fc;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1971c2;
+        }
+
+        .adsense-box {
+            width: 100%;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px dashed #dee2e6;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #adb5bd;
+        }
+
+        .category-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-cat {
+            background: #fff;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #495057;
+        }
+
+        .btn-cat:hover {
+            background: #e9ecef;
+        }
+
+        .btn-cat.active {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .roulette-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 15px;
+        }
+
+        canvas {
+            width: 100%;
+            display: block;
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .arrow {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #333;
+            z-index: 10;
+        }
+
+        #result-display {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #e03131;
+            margin: 10px 0 20px;
+            min-height: 40px;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-spin {
+            background-color: #ff6b6b;
+            color: white;
+            flex: 2;
+            box-shadow: 0 4px 6px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-spin:active {
+            transform: scale(0.98);
+        }
+
+        .btn-share {
+            background-color: #339af0;
+            color: white;
+            flex: 1;
+        }
+
+        .edit-area {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+
+        .btn-add {
+            background-color: #51cf66;
+            color: white;
+            padding: 0 15px;
+            border-radius: 5px;
+        }
+
+        .menu-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .menu-tag {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-delete {
+            color: #adb5bd;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .btn-delete:hover {
+            color: #fa5252;
+        }
+
+        .seo-content {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .seo-content h2 {
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        .seo-content p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🍽️ 메뉴 룰렛</h1>
+        <div
+            style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 20px; text-align: left;">
+            <h2 style="font-size: 1.1rem; color: #495057; margin-top: 0; margin-bottom: 10px;">💡 3초 만에 점심 메뉴 정하는 법</h2>
+            <p style="font-size: 0.9rem; color: #666; margin: 0; line-height: 1.5;">
+                오늘 점심 메뉴 고민으로 시간을 낭비하지 마세요. 이 <strong>랜덤 메뉴 룰렛</strong>은 한식, 중식, 일식 등 원하시는 카테고리를 선택하고 돌리기만 하면 됩니다.
+                결정 장애를 해결해 주는 이 도구는 빅데이터를 기반으로 직장인들이 가장 선호하는 메뉴 200여 가지를 추천해 드립니다.
+                지금 바로 아래 설정에서 <strong>'메뉴 개수'</strong>를 정하고 룰렛을 돌려보세요!
+            </p>
+        </div>
+        <p class="desc">카테고리와 개수를 정해서 돌려보세요!</p>
+
+        <div class="setting-box">
+            <span>❓ 룰렛 메뉴 개수:</span>
+            <input type="number" id="menuCount" value="5" min="2" max="15" onchange="refreshRoulette()">
+            <span>개</span>
+        </div>
+
+        <div class="category-group" id="categoryBox"></div>
+
+        <div class="adsense-box adsense-top">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
+                data-ad-slot="1765717581" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <div class="roulette-wrapper">
+            <div class="arrow"></div>
+            <canvas id="roulette" width="360" height="360"></canvas>
+        </div>
+        <div id="result-display">READY?</div>
+
+        <div class="btn-group">
+            <button class="btn-spin" onclick="spinRoulette()">🎲 메뉴 돌리기!</button>
+            <button class="btn-share" onclick="shareResult()">🔗 공유</button>
+        </div>
+
+        <div class="edit-area">
+            <div class="input-group">
+                <input type="text" id="newMenu" placeholder="먹고 싶은 메뉴 직접 추가" onkeypress="handleEnter(event)">
+                <button class="btn-add" onclick="addMenu()">추가</button>
+            </div>
+            <div id="menuList" class="menu-list"></div>
+        </div>
+
+        <div class="adsense-box adsense-top">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
+                data-ad-slot="6742712096" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <div class="seo-content"
+            style="margin-top: 50px; padding: 30px; background-color: #f8f9fa; border-radius: 15px; border: 1px solid #e9ecef; text-align: left;">
+            <h2
+                style="color: #343a40; font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid #ff6b6b; padding-bottom: 10px;">
+                💡 점심 메뉴 결정장애, 룰렛으로 한방에 해결하세요!</h2>
+
+            <h3 style="color: #495057; font-size: 1.2rem; margin-top: 20px;">직장인의 최대 난제, "오늘 점심 뭐 먹지?"</h3>
+            <p style="color: #666; line-height: 1.8;">
+                매일 점심시간마다 반복되는 고민, "오늘 뭐 먹지?"는 직장인과 학생들에게 가장 큰 스트레스 중 하나입니다.
+                한식, 중식, 일식, 양식, 분식 등 수많은 선택지 중에서 하나를 고르는 것은 결코 쉬운 일이 아닙니다.
+                특히 동료들과 의견이 갈리거나 혼밥 메뉴를 정하지 못해 소중한 점심시간을 길거리에서 낭비하는 경우가 많습니다.
+                이 <strong>무료 점심 메뉴 추천 룰렛</strong>은 여러분의 결정 시간을 단 3초로 줄여주는 최고의 도구입니다.
+            </p>
+
+            <h3 style="color: #495057; font-size: 1.2rem; margin-top: 20px;">🎲 카테고리별 맞춤 메뉴 추천 기능</h3>
+            <p style="color: #666; line-height: 1.8;">
+                단순히 아무거나 추천하지 않습니다. 상황에 맞는 다양한 카테고리를 제공합니다:
+            </p>
+            <ul style="color: #666; line-height: 1.8; padding-left: 20px;">
+                <li><strong>🍚 든든한 한식:</strong> 김치찌개, 된장찌개, 제육볶음, 국밥 등 한국인의 소울 푸드를 추천합니다.</li>
+                <li><strong>🥟 맛있는 중식:</strong> 짜장면, 짬뽕, 탕수육 등 배달 음식의 정석을 랜덤으로 뽑아보세요.</li>
+                <li><strong>🍣 깔끔한 일식:</strong> 돈가스, 초밥, 우동, 라멘 등 정갈한 한 끼가 필요할 때 유용합니다.</li>
+                <li><strong>🍔 간편한 패스트푸드:</strong> 맥도날드, 버거킹, 맘스터치 등 브랜드별 대표 버거 메뉴까지 데이터베이스에 포함되어 있습니다.</li>
+                <li><strong>🍜 라면 & 분식:</strong> 신라면, 불닭볶음면 같은 라면부터 떡볶이, 김밥까지 가벼운 한 끼를 해결해 드립니다.</li>
+            </ul>
+
+            <h3 style="color: #495057; font-size: 1.2rem; margin-top: 20px;">🚀 이 룰렛을 200% 활용하는 방법</h3>
+            <p style="color: #666; line-height: 1.8;">
+                1. <strong>카테고리 선택:</strong> 지금 땡기는 음식 종류(한식, 중식 등)를 선택하거나 '전체 랜덤'을 누르세요.<br>
+                2. <strong>개수 조절:</strong> 너무 많은 보기가 싫다면 룰렛 개수를 2개~15개 사이로 조절해보세요.<br>
+                3. <strong>메뉴 수정:</strong> 먹고 싶은 메뉴가 빠졌나요? 직접 입력해서 나만의 룰렛판을 만들 수 있습니다.<br>
+                4. <strong>결과 공유:</strong> 친구나 직장 동료에게 "오늘 점심은 이거다!"라고 링크를 공유해보세요. 실시간으로 당첨 결과가 공유됩니다.
+            </p>
+
+            <p style="color: #868e96; font-size: 0.9rem; margin-top: 30px; text-align: center;">
+                본 서비스는 무료이며, 결정 장애를 겪는 모든 분들을 위해 제작되었습니다. <br>
+                오늘의 맛있는 한 끼, 랜덤 룰렛과 함께 즐거운 점심시간 되세요!
+            </p>
+        </div>
+        <div class="faq-section"
+            style="margin-top: 20px; padding: 30px; background-color: #fff; border-radius: 15px; border: 1px solid #e9ecef; text-align: left; margin-bottom: 50px;">
+            <h3
+                style="color: #343a40; font-size: 1.3rem; border-bottom: 2px solid #339af0; padding-bottom: 10px; margin-bottom: 20px;">
+                🙋 자주 묻는 질문 (FAQ)</h3>
+
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #495057; margin-bottom: 5px;">Q. 룰렛 결과는 정말 랜덤인가요?</h4>
+                <p style="color: #666; font-size: 0.9rem; line-height: 1.6;">
+                    네, 그렇습니다. 본 서비스는 웹 브라우저의 고성능 난수 생성 알고리즘(Math.random)을 사용하여 공정하게 결과를 도출합니다.
+                    특정 메뉴가 더 자주 나오도록 조작되지 않았으며, 사용자가 '돌리기' 버튼을 누르는 순간의 순수한 확률에 따라 점심 메뉴가 결정됩니다.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #495057; margin-bottom: 5px;">Q. 원하는 메뉴가 목록에 없어요.</h4>
+                <p style="color: #666; font-size: 0.9rem; line-height: 1.6;">
+                    기본 데이터베이스에는 한식, 중식, 일식, 패스트푸드 등 200여 가지가 넘는 방대한 메뉴가 포함되어 있습니다.
+                    하지만 만약 원하시는 메뉴가 없다면, 룰렛 하단의 <strong>[직접 추가]</strong> 기능을 이용해 보세요.
+                    입력하신 메뉴가 즉시 룰렛판에 반영되어 나만의 커스텀 룰렛을 만들 수 있습니다.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #495057; margin-bottom: 5px;">Q. 친구와 동시에 같은 결과를 볼 수 있나요?</h4>
+                <p style="color: #666; font-size: 0.9rem; line-height: 1.6;">
+                    본 사이트는 실시간 데이터 동기화 기술을 적용하여, 다른 사용자가 룰렛을 돌려 당첨된 결과를 하단 <strong>[실시간 당첨 현황]</strong>에서 즉시 확인할 수 있습니다.
+                    점심시간에 동료들과 링크를 공유하여 누가 더 맛있는 메뉴에 당첨되는지 내기해 보는 것도 좋은 방법입니다.
+                </p>
+            </div>
+
+            <div>
+                <h4 style="color: #495057; margin-bottom: 5px;">Q. 모바일에서도 이용 가능한가요?</h4>
+                <p style="color: #666; font-size: 0.9rem; line-height: 1.6;">
+                    물론입니다. PC, 태블릿, 스마트폰 등 모든 기기에서 최적화된 화면(반응형 웹)으로 제공됩니다.
+                    별도의 앱 설치 없이 인터넷만 연결되어 있다면 언제 어디서든 접속하여 오늘 뭐 먹지 고민을 해결하실 수 있습니다.
+                </p>
+            </div>
+        </div>
+        <footer style="margin-top: 50px; margin-bottom: 30px; text-align: center; color: #adb5bd; font-size: 0.8rem;">
+            <p>
+                &copy; 2026 Random Lunch Roulette. All rights reserved.<br>
+                이 사이트는 결정 장애를 겪는 분들을 위한 무료 도구입니다.
+            </p>
+            <p>
+                <a href="privacy.html" style="color: #868e96; text-decoration: none; margin-right: 10px;">개인정보처리방침</a> |
+                <a href="mailto:cadilrak@gmail.com" style="color: #868e96; text-decoration: none;">문의하기</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="menu_data.js"></script>
+    <script type="module" src="history.js"></script>
+
+    <script>
+        let currentMenus = [];
+        let selectedCategory = 'all';
+        const colors = ["#FFD700", "#FF6B6B", "#4DABF7", "#69DB7C", "#FFA94D", "#DA77F2", "#74C0FC", "#adb5bd"];
+        const canvas = document.getElementById("roulette");
+        const ctx = canvas.getContext("2d");
+        let currentRotation = 0;
+
+        // --- 🌟 [수정됨] 카테고리 버튼을 RouletteData 기반으로 생성 ---
+        function renderCategoryButtons() {
+            const container = document.getElementById('categoryBox');
+            container.innerHTML = '';
+
+            // 1. 'all' 먼저
+            if (RouletteData.categories.all) {
+                createSingleButton('all', RouletteData.categories.all.name, true);
+            }
+
+            // 2. 나머지 키들 반복
+            const keys = Object.keys(RouletteData.categories).filter(key => key !== 'all');
+            keys.forEach(key => {
+                const cat = RouletteData.categories[key];
+                createSingleButton(key, cat.name, false);
+            });
+        }
+
+        function createSingleButton(key, label, isActive) {
+            const btn = document.createElement('button');
+            btn.className = isActive ? 'btn-cat active' : 'btn-cat';
+            btn.innerText = label;
+            btn.onclick = function () { changeCategory(key, this); };
+            container = document.getElementById('categoryBox').appendChild(btn);
+        }
+
+        function getRandomMenus(sourceArray, count) {
+            if (!sourceArray) return [];
+            const shuffled = [...sourceArray].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function refreshRoulette() {
+            const btn = document.querySelector('.btn-cat.active');
+            changeCategory(selectedCategory, btn);
+        }
+
+        function changeCategory(category, btnElement) {
+            if (btnElement) {
+                document.querySelectorAll('.btn-cat').forEach(btn => btn.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+            selectedCategory = category;
+
+            let countInput = document.getElementById('menuCount').value;
+            let count = parseInt(countInput);
+            if (isNaN(count) || count < 2) count = 2;
+
+            // [수정됨] RouletteData.categories에서 데이터 가져오기
+            const catData = RouletteData.categories[category];
+            const source = catData ? catData.menus : [];
+
+            currentMenus = source.length > count ? getRandomMenus(source, count) : [...source];
+
+            drawRoulette();
+
+            document.getElementById("result-display").innerText = "READY?";
+            document.getElementById("result-display").style.color = "#e03131";
+        }
+
+        function drawRoulette() {
+            if (currentMenus.length === 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+
+            const arc = (2 * Math.PI) / currentMenus.length;
+            const size = canvas.width;
+            const center = size / 2;
+
+            ctx.clearRect(0, 0, size, size);
+
+            for (let i = 0; i < currentMenus.length; i++) {
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(center, center);
+                ctx.arc(center, center, center - 10, i * arc, (i + 1) * arc);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(center, center);
+                ctx.rotate(i * arc + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 16px Arial";
+                ctx.fillText(currentMenus[i], center - 30, 5);
+                ctx.restore();
+            }
+            updateMenuList();
+        }
+
+        function updateMenuList() {
+            const listDiv = document.getElementById("menuList");
+            listDiv.innerHTML = "";
+            currentMenus.forEach((menu, index) => {
+                const tag = document.createElement("div");
+                tag.className = "menu-tag";
+                tag.innerHTML = `${menu} <span class="btn-delete" onclick="removeMenu(${index})">×</span>`;
+                listDiv.appendChild(tag);
+            });
+        }
+
+        function addMenu() {
+            const input = document.getElementById("newMenu");
+            const value = input.value.trim();
+            if (value) {
+                currentMenus.push(value);
+                input.value = "";
+                drawRoulette();
+            }
+        }
+
+        function removeMenu(index) {
+            if (currentMenus.length <= 2) {
+                alert("최소 2개의 메뉴는 있어야 합니다!");
+                return;
+            }
+            currentMenus.splice(index, 1);
+            drawRoulette();
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') addMenu();
+        }
+
+        function shootFireworks() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            var randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        let isSpinning = false;
+        function spinRoulette() {
+            if (isSpinning) return;
+            if (currentMenus.length < 2) {
+                alert("메뉴가 너무 적습니다!");
+                return;
+            }
+            isSpinning = true;
+
+            const resultDisplay = document.getElementById("result-display");
+            resultDisplay.innerText = "두구두구...";
+            resultDisplay.style.color = "#333";
+
+            const randomDegree = Math.floor(Math.random() * 360) + 1800;
+            currentRotation += randomDegree;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                shootFireworks();
+
+                const finalAngle = currentRotation % 360;
+                const arcDeg = 360 / currentMenus.length;
+                let targetAngle = (270 - finalAngle + 360) % 360;
+                let index = Math.floor(targetAngle / arcDeg);
+                if (index >= currentMenus.length) index = currentMenus.length - 1;
+                const winner = currentMenus[index];
+
+                setTimeout(() => {
+                    resultDisplay.innerText = `🎉 오늘은 [${winner}] 어때요?`;
+                    resultDisplay.style.color = "#e03131";
+
+                    if (typeof addHistory === 'function') addHistory(winner);
+
+                }, 600);
+
+            }, 3000);
+        }
+
+        function shareResult() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert("주소 복사 완료!");
+            }).catch(() => {
+                prompt("주소 복사:", url);
+            });
+        }
+
+        window.onload = function () {
+            // RouletteData가 잘 로드되었는지 확인
+            if (typeof RouletteData !== 'undefined') {
+                renderCategoryButtons();
+
+                // 첫 번째 버튼('all') 찾아서 클릭
+                const firstBtn = document.querySelector('#categoryBox button');
+                if (firstBtn) changeCategory('all', firstBtn);
+            } else {
+                console.error("데이터 파일(menu_data.js) 로드 실패");
+            }
+        };
+    </script>
+
+</body>
+
+</html>

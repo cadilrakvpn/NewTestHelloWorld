@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Snap Master - 순발력 테스트 & 반응속도 게임 (무료 미니게임)</title>
+    <meta name="description" content="당신의 반응속도는 몇 초인가요? 움직이는 타겟을 정확히 포착하는 Snap Master 게임! 친구와 내기하기 좋은 무료 웹 게임입니다.">
+    <meta name="keywords" content="순발력테스트, 반응속도게임, 미니게임, 심심풀이게임, 동체시력, 웹게임, 무료게임, 내기게임">
+    <link rel="canonical" href="https://randomroulette.shop/SnapMaster">
+
+    <meta property="og:title" content="Snap Master - 초정밀 순발력 테스트">
+    <meta property="og:description" content="제 최고 기록에 도전해보세요! 0.1초의 짜릿한 승부.">
+    <meta property="og:url" content="https://randomroulette.shop/SnapMaster">
+    <meta property="og:image" content="https://randomroulette.shop/SnapMaster/snap_thumbnail.png">
+
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: 'Pretendard', sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        /* 광고 영역 */
+        .ad-banner {
+            width: 100%;
+            max-width: 800px;
+            min-height: 90px;
+            height: auto;
+            background: #252525;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-size: 12px;
+            border: 1px dashed #444;
+            overflow: hidden;
+        }
+
+        /* 게임 컨테이너 */
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 4 / 3;
+            background: #000;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 4px solid #333;
+        }
+
+        /* 상단 바 */
+        .top-bar {
+            height: 90px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px 20px;
+            z-index: 20;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .status-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .text-accent {
+            color: #00E676;
+        }
+
+        .text-warn {
+            color: #FF5252;
+        }
+
+        .text-gold {
+            color: #FFD700;
+            font-size: 20px;
+        }
+
+        .status-right {
+            text-align: right;
+        }
+
+        .life-container {
+            font-size: 32px;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6));
+            transition: transform 0.2s;
+            color: #ff0000;
+            /* <--- 이 줄을 추가하세요 (빨간색) */
+        }
+
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+            color: #FF5252;
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-2px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(4px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-8px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(8px, 0, 0);
+            }
+        }
+
+        #combo-display {
+            font-size: 14px;
+            color: #ccc;
+            margin-top: 5px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        .combo-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #555;
+            border-radius: 50%;
+            margin-left: 4px;
+            border: 1px solid #fff;
+            transition: all 0.3s;
+        }
+
+        .combo-active {
+            background: #00E676;
+            box-shadow: 0 0 8px #00E676;
+            transform: scale(1.3);
+        }
+
+        /* 뷰파인더 */
+        #viewfinder {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            cursor: crosshair;
+            box-sizing: border-box;
+            border: 0px solid transparent;
+            transition: border-width 0.1s, border-color 0.1s;
+        }
+
+        /* 잭팟 모드 효과 (사이렌) */
+        .jackpot-mode::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 10px solid #FF5252;
+            box-shadow: inset 0 0 50px #FF5252;
+            animation: panic 0.5s infinite;
+            pointer-events: none;
+            z-index: 15;
+            box-sizing: border-box;
+        }
+
+        .jackpot-text {
+            position: absolute;
+            top: 100px;
+            width: 100%;
+            text-align: center;
+            font-size: 40px;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 10px red;
+            z-index: 16;
+            animation: pulse 0.5s infinite;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 신호등 클래스 */
+        .signal-green {
+            border: 10px solid #00E676 !important;
+            box-shadow: inset 0 0 50px #00E676;
+        }
+
+        .signal-yellow {
+            border: 10px solid #FFD700 !important;
+            box-shadow: inset 0 0 50px #FFD700;
+        }
+
+        /* [New] HARD 모드용 주황색 */
+        .signal-orange {
+            border: 10px solid #FF9100 !important;
+            box-shadow: inset 0 0 50px #FF9100;
+        }
+
+        .signal-red {
+            border: 10px solid #FF5252 !important;
+            box-shadow: inset 0 0 50px #FF5252;
+            animation: panic 0.2s infinite;
+        }
+
+        @keyframes panic {
+
+            0%,
+            100% {
+                background-color: rgba(255, 0, 0, 0.1);
+            }
+
+            50% {
+                background-color: rgba(255, 0, 0, 0.3);
+            }
+        }
+
+        /* 테마 */
+        .theme-day {
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+        }
+
+        .theme-sunset {
+            background: linear-gradient(to bottom, #FF512F, #DD2476);
+        }
+
+        .theme-night {
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+        }
+
+        .theme-forest {
+            background: linear-gradient(to bottom, #134E5E, #71B280);
+        }
+
+        .deco {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 150px solid #81C784;
+            z-index: 1;
+            transition: border-bottom-color 0.5s;
+        }
+
+        .theme-day .deco {
+            border-bottom-color: #4CAF50;
+        }
+
+        .theme-sunset .deco {
+            border-bottom-color: #3E2723;
+        }
+
+        .theme-night .deco {
+            border-bottom-color: #222;
+        }
+
+        .theme-forest .deco {
+            border-bottom-color: #1B5E20;
+        }
+
+        .d1 {
+            left: -50px;
+        }
+
+        .d2 {
+            left: 30%;
+            border-bottom-width: 220px;
+            bottom: -20px;
+            z-index: 0;
+        }
+
+        .d3 {
+            right: -50px;
+            border-bottom-width: 180px;
+        }
+
+        /* 타겟 박스 */
+        #focus-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.2);
+            transition: width 0.3s, height 0.3s;
+            z-index: 10;
+        }
+
+        #focus-box::before,
+        #focus-box::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-color: #ffcc00;
+            border-style: solid;
+        }
+
+        #focus-box::before {
+            top: -3px;
+            left: -3px;
+            border-width: 5px 0 0 5px;
+        }
+
+        #focus-box::after {
+            bottom: -3px;
+            right: -3px;
+            border-width: 0 5px 5px 0;
+        }
+
+        /* 선수 컨테이너 */
+        #runner-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-top: -60px;
+            width: 120px;
+            height: 120px;
+            z-index: 5;
+            will-change: transform;
+        }
+
+        #runner-body {
+            width: 100%;
+            height: 100%;
+            font-size: 100px;
+            text-align: center;
+            line-height: 120px;
+            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.3));
+            animation: bounce var(--bounce-speed, 0.5s) ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: scaleX(-1) translateY(0) rotate(-5deg);
+            }
+
+            to {
+                transform: scaleX(-1) translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* 하단 컨트롤 */
+        .bottom-bar {
+            height: 120px;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-top: 1px solid #333;
+        }
+
+        #shutter-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #555;
+            cursor: pointer;
+            box-shadow: 0 0 0 2px #111, 0 0 0 5px #fff;
+            transition: transform 0.1s;
+        }
+
+        #shutter-btn:active {
+            transform: scale(0.95);
+            background: #ddd;
+        }
+
+        /* 메시지 및 팝업 */
+        #toast-msg {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px 40px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 부활 팝업 */
+        #revive-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .revive-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .revive-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #FFD700;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            animation: pulse 1s infinite;
+        }
+
+        .giveup-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Game Over 화면 */
+        #game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .go-title {
+            font-size: 50px;
+            font-weight: 900;
+            color: #FF5252;
+            margin-bottom: 20px;
+        }
+
+        .result-stats {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #ccc;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .avg-score {
+            color: #FFD700;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .go-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #00E676;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .share-btn {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .go-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 갤러리 */
+        .gallery-section {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+
+        .gallery-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        #gallery-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .gallery-item {
+            min-width: 100px;
+            background: #333;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            border-top: 3px solid #555;
+            text-align: center;
+            position: relative;
+        }
+
+        .gallery-item.success {
+            border-top-color: #00E676;
+        }
+
+        .gallery-item.fail {
+            border-top-color: #FF5252;
+        }
+
+        /* 특수 효과 */
+        #damage-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: red;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 998;
+            transition: opacity 0.1s;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #f00;
+            top: 50%;
+            left: 50%;
+            z-index: 99;
+            pointer-events: none;
+            border-radius: 2px;
+        }
+
+        #flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            transition: opacity 0.15s;
+        }
+
+        /* SEO */
+        .seo-content {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #252525;
+            border-radius: 10px;
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .seo-content h2 {
+            font-size: 18px;
+            color: #ddd;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .seo-content p {
+            margin-bottom: 10px;
+        }
+
+        .seo-content strong {
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <nav
+        style="width: 100%; background: #fff; border-bottom: 1px solid #e9ecef; padding: 10px 20px; box-sizing: border-box; display: flex; justify-content: center; margin-bottom: 10px;">
+        <div
+            style="max-width: 800px; width: 100%; display: flex; gap: 15px; font-size: 14px; font-weight: bold; overflow-x: auto;">
+            <a href="/" style="text-decoration: none; color: #333;">🏠 홈(메뉴룰렛)</a>
+            <a href="/SnapMaster/index.html" style="text-decoration: none; color: #333;">⚡ 스냅마스터</a>
+            <a href="/articles/lunch_tips.html" style="text-decoration: none; color: #1971c2;">📖 점심 메뉴 추천 팁</a>
+            <a href="/articles/reflex_tips.html" style="text-decoration: none; color: #1971c2;">📖 반응속도 올리는 법</a>
+        </div>
+    </nav>
+    <div class="ad-banner">
+        <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
+            data-ad-slot="2936109279" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div id="game-container">
+        <div class="top-bar">
+            <div class="status-left">
+                <div class="badge-row">
+                    <div class="badge">ROUND <span class="text-accent" id="round-display">1</span></div>
+                    <div class="badge">PASS <span class="text-warn" id="pass-display">1</span></div>
+                </div>
+                <div class="badge">PTS <span class="text-gold" id="total-score-display">0</span></div>
+            </div>
+
+            <div class="status-right">
+                <div class="life-container" id="life-display">❤❤❤❤❤</div>
+                <div id="combo-display">
+                    COMBO <span class="combo-dot" id="c1"></span><span class="combo-dot" id="c2"></span><span
+                        class="combo-dot" id="c3"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewfinder" class="theme-day">
+            <div id="start-screen"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 150; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; padding: 20px; text-align: center; backdrop-filter: blur(5px);">
+                <h1 style="font-size: 2.5rem; color: #00E676; margin-bottom: 10px; text-shadow: 0 0 10px #00E676;">⚡
+                    Snap Master</h1>
+                <p style="font-size: 1.1rem; line-height: 1.6; max-width: 500px; color: #ddd; margin-bottom: 30px;">
+                    당신의 반응속도는 상위 몇 %일까요?<br>
+                    화면을 빠르게 지나가는 타겟을 정확한 타이밍에 포착하세요.<br>
+                    <strong>5번의 기회</strong>가 주어지며, 연속 성공 시 콤보 보너스를 획득합니다.
+                </p>
+                <div
+                    style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-bottom: 30px; font-size: 0.9rem; text-align: left;">
+                    <strong style="color: #FFD700;">🎮 게임 방법:</strong><br>
+                    1. <strong>[스페이스바]</strong> 또는 <strong>[셔터 버튼]</strong>을 누르세요.<br>
+                    2. 타겟이 중앙 박스에 들어왔을 때 찍어야 성공입니다.<br>
+                    3. 희귀 몬스터(🚀, 🐢, 💰)를 잡으면 특수 효과가 발동됩니다.
+                </div>
+                <button onclick="startGameUI()"
+                    style="padding: 15px 40px; font-size: 1.5rem; font-weight: bold; background: #FF5252; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 20px rgba(255, 82, 82, 0.6); animation: pulse 1.5s infinite;">
+                    게임 시작하기 ▷
+                </button>
+            </div>
+            <div class="deco d1"></div>
+            <div class="deco d2"></div>
+            <div class="deco d3"></div>
+
+            <div class="jackpot-text" id="jackpot-text">🚨 JACKPOT CHANCE 🚨</div>
+            <div id="focus-box"></div>
+
+            <div id="runner-wrapper">
+                <div id="runner-body" class="bounce">🏃</div>
+            </div>
+
+            <div id="toast-msg"></div>
+            <div id="flash-overlay"></div>
+            <div id="damage-overlay"></div>
+
+            <div id="revive-modal">
+                <div class="revive-title">앗, 죽으셨나요? 😱</div>
+                <div style="color:#ccc; margin-bottom:30px; font-size:14px;">지금 광고를 보고 부활하면<br>생명 3개를 얻고 이어서 할 수 있어요!
+                </div>
+                <button class="revive-btn" onclick="reviveGame()">📺 광고 보고 부활하기 (+3❤)</button>
+                <button class="giveup-btn" onclick="confirmGameOver()">그냥 종료할게요</button>
+            </div>
+
+            <div id="game-over-screen">
+                <div class="go-title">GAME OVER</div>
+                <div class="result-stats">
+                    <div class="stat-item">최종 라운드 <span class="stat-value" id="final-round">1</span></div>
+                    <div class="stat-item">총 점수 <span class="stat-value avg-score" id="final-score">0</span></div>
+                </div>
+                <div class="btn-group">
+                    <button class="go-btn" onclick="restartGame()">다시하기</button>
+                    <button class="go-btn share-btn" onclick="shareResult()">공유하기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button id="shutter-btn" onclick="capture()"></button>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery-title">SESSION LOG</div>
+        <div id="gallery-list">
+            <div style="color: #666; font-size: 14px; padding: 10px;">
+                아직 게임 기록이 없습니다. 위에서 <strong>게임 시작</strong>을 눌러 첫 기록을 남겨보세요!
+            </div>
+        </div>
+    </div>
+
+    <div class="seo-content">
+        <h2>Snap Master 게임 소개</h2>
+        <p><strong>Snap Master(스냅 마스터)</strong>는 당신의 순발력과 반응속도를 극한까지 테스트하는 무료 웹 미니게임입니다. 화면을 빠르게 지나가는 타겟을 정확한 타이밍에 포착하여
+            셔터를 누르세요.</p>
+        <p>단순해 보이지만 라운드가 거듭될수록 빨라지는 속도와 다양한 방해 요소들이 당신의 동체 시력을 시험합니다. 잭팟 찬스와 희귀한 몬스터를 잡아 고득점에 도전하고, 친구들과 밥값 내기 한판 승부를
+            즐겨보세요.</p>
+    </div>
+
+    <div class="ad-banner">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
+            data-ad-slot="3250792285" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <script>
+        // 난이도 설정 (6단계)
+        const DifficultyPool = {
+            VERY_EASY: { label: "VERY EASY", speed: 3.5, size: 200, allow: 60, bounce: "0.8s", points: 100, signalClass: "signal-green", color: "#00E676" },
+            EASY: { label: "EASY", speed: 2.8, size: 180, allow: 55, bounce: "0.7s", points: 200, signalClass: "signal-green", color: "#00E676" },
+            NORMAL: { label: "NORMAL", speed: 2.0, size: 150, allow: 40, bounce: "0.6s", points: 300, signalClass: "signal-yellow", color: "#FFD700" },
+            HARD: { label: "HARD", speed: 1.5, size: 130, allow: 35, bounce: "0.5s", points: 500, signalClass: "signal-orange", color: "#FF9100" },
+            VERY_HARD: { label: "JACKPOT", speed: 1.2, size: 115, allow: 25, bounce: "0.4s", points: 1000, signalClass: "signal-red", color: "#FF5252" },
+            EXPERT: { label: "JACKPOT+", speed: 0.85, size: 100, allow: 20, bounce: "0.3s", points: 2000, signalClass: "signal-red", color: "#FF0000" }
+        };
+
+        const StandardChars = ['🏃', '🚴', '🐕', '🐈', '🚗', '🛵', '🐎', '🛹'];
+        const Themes = ['theme-day', 'theme-sunset', 'theme-night', 'theme-forest'];
+
+        // 레어 몹 정의 (10% 확률)
+        const RareMobs = [
+            { char: '🚀', name: "ROCKET", speedMod: 1.5, scoreMod: 2.0, effect: null }, // 로켓: 엄청 빠름, 점수 2배
+            { char: '🐢', name: "TURTLE", speedMod: 0.6, scoreMod: 0.5, effect: null }, // 거북이: 느림, 타이밍 뺏기
+            { char: '💰', name: "MONEY", speedMod: 1.0, scoreMod: 1.0, effect: 'life' } // 돈주머니: 생명력 회복
+        ];
+
+        // DOM Elements
+        const runnerWrapper = document.getElementById('runner-wrapper');
+        const runnerBody = document.getElementById('runner-body');
+        const focusBox = document.getElementById('focus-box');
+        const toastMsg = document.getElementById('toast-msg');
+        const flashOverlay = document.getElementById('flash-overlay');
+        const damageOverlay = document.getElementById('damage-overlay');
+        const shutterBtn = document.getElementById('shutter-btn');
+        const viewfinder = document.getElementById('viewfinder');
+        const jackpotText = document.getElementById('jackpot-text');
+
+        const roundDisplay = document.getElementById('round-display');
+        const passDisplay = document.getElementById('pass-display');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const lifeDisplay = document.getElementById('life-display');
+        const comboDots = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3')];
+
+        const reviveModal = document.getElementById('revive-modal');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalRoundEl = document.getElementById('final-round');
+        const finalScoreEl = document.getElementById('final-score');
+        const galleryList = document.getElementById('gallery-list');
+
+        // Game State
+        let isPlaying = false;
+        let animationId;
+        let roundCount = 1;
+        let lives = 5;
+        let perfectCombo = 0;
+        let totalScore = 0;
+        let hasRevived = false; // 부활 사용 여부
+
+        // Logic State
+        let lastTime = null;
+        let progressTime = 0;
+        let currentConfig = null;
+        let currentPassCount = 1;
+        let currentMob = null; // 현재 등장한 몹 정보
+
+        // Deck System
+        let difficultyDeck = [];
+
+        function init() {
+            restartGame();
+        }
+
+        function initDeck() {
+            // 3라운드부터 사용할 덱: EASY ~ EXPERT가 골고루 포함됨
+            // EASY(3), NORMAL(3), HARD(2), VERY_HARD(1), EXPERT(1) 비율
+            difficultyDeck = [
+                "EASY", "EASY", "EASY",
+                "NORMAL", "NORMAL", "NORMAL",
+                "HARD", "HARD",
+                "VERY_HARD",
+                "EXPERT"
+            ];
+            shuffleDeck(difficultyDeck);
+        }
+
+        function shuffleDeck(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        window.restartGame = function () {
+            roundCount = 1;
+            lives = 5;
+            perfectCombo = 0;
+            totalScore = 0;
+            hasRevived = false;
+            initDeck();
+
+            gameOverScreen.style.display = 'none';
+            reviveModal.style.display = 'none';
+            shutterBtn.style.display = 'block';
+            galleryList.innerHTML = ''; // 갤러리 초기화
+
+            updateLifeUI();
+            updateComboUI();
+            updateScoreUI();
+
+            prepareRound();
+        }
+
+        // --- Core Logic: 난이도 및 몹 결정 ---
+        function prepareRound() {
+            isPlaying = false;
+            shutterBtn.disabled = true;
+            shutterBtn.style.opacity = 0.5;
+            toastMsg.style.display = 'none';
+            jackpotText.style.display = 'none';
+            viewfinder.classList.remove('jackpot-mode');
+
+            // 1. 난이도 결정 (덱 시스템)
+            let typeKey = "VERY_EASY";
+            if (roundCount === 1) {
+                typeKey = "VERY_EASY"; // 1라운드 고정
+            } else if (roundCount === 2) {
+                typeKey = "EASY";      // 2라운드 고정
+            } else {
+                if (difficultyDeck.length === 0) initDeck();
+                typeKey = difficultyDeck.pop();
+            }
+            currentConfig = DifficultyPool[typeKey];
+
+            // 2. 레어 몹 결정 (10% 확률)
+            currentMob = { char: StandardChars[Math.floor(Math.random() * StandardChars.length)], isRare: false };
+            if (Math.random() < 0.1) {
+                const rare = RareMobs[Math.floor(Math.random() * RareMobs.length)];
+                currentMob = { ...rare, isRare: true };
+            }
+
+            // 3. UI 업데이트
+            roundDisplay.innerText = roundCount;
+            currentPassCount = 1;
+            passDisplay.innerText = currentPassCount;
+
+            // 타겟 박스 크기 조절
+            focusBox.style.width = currentConfig.size + 'px';
+            focusBox.style.height = currentConfig.size + 'px';
+            focusBox.style.borderColor = "rgba(255,255,255,0.9)";
+
+            // 캐릭터 및 배경 설정
+            runnerBody.innerText = currentMob.char;
+            runnerBody.style.setProperty('--bounce-speed', currentConfig.bounce);
+            viewfinder.className = Themes[Math.floor(Math.random() * Themes.length)];
+
+            // 잭팟 모드 (Very Hard, Expert) 연출
+            if (typeKey === "VERY_HARD" || typeKey === "EXPERT") {
+                viewfinder.classList.add('jackpot-mode');
+                jackpotText.style.display = 'block';
+                if (typeKey === "EXPERT") jackpotText.innerText = "🚨 SUPER JACKPOT 🚨";
+                else jackpotText.innerText = "🚨 JACKPOT CHANCE 🚨";
+            }
+
+            // 시작 위치 초기화
+            runnerWrapper.style.transform = `translateX(-300px)`;
+
+            // 신호등 효과 후 출발
+            viewfinder.classList.add(currentConfig.signalClass);
+            setTimeout(() => {
+                viewfinder.classList.remove(currentConfig.signalClass);
+                startMovement();
+            }, 800);
+        }
+
+        function startMovement() {
+            isPlaying = true;
+            shutterBtn.disabled = false;
+            shutterBtn.style.opacity = 1;
+
+            lastTime = null;
+            progressTime = 0;
+            cancelAnimationFrame(animationId);
+            animationId = requestAnimationFrame(loop);
+        }
+
+        function loop(timestamp) {
+            if (!isPlaying) return;
+            if (!lastTime) lastTime = timestamp;
+            const dt = timestamp - lastTime;
+            lastTime = timestamp;
+            progressTime += dt;
+
+            // 몹 속도 보정 (레어 몹일 경우 speedMod 적용)
+            let finalSpeed = currentConfig.speed;
+            if (currentMob.isRare && currentMob.speedMod) {
+                finalSpeed = finalSpeed / currentMob.speedMod; // 시간이 줄어들어야 빨라짐
+            }
+
+            const durationMs = finalSpeed * 1000;
+            const passIndex = Math.floor(progressTime / durationMs);
+            const newPassCount = passIndex + 1;
+
+            if (newPassCount > currentPassCount) {
+                currentPassCount = newPassCount;
+                passDisplay.innerText = currentPassCount;
+            }
+
+            let progress = (progressTime % durationMs) / durationMs;
+            const viewWidth = viewfinder.clientWidth || 800;
+            const startX = -viewWidth * 0.4;
+            const endX = viewWidth * 1.4;
+            const currentX = startX + (endX - startX) * progress;
+            runnerWrapper.style.transform = `translateX(${currentX}px)`;
+
+            animationId = requestAnimationFrame(loop);
+        }
+
+        // --- Capture Logic ---
+        window.capture = function () {
+            if (!isPlaying) return;
+            isPlaying = false;
+            cancelAnimationFrame(animationId);
+
+            flashOverlay.style.opacity = 0.8;
+            setTimeout(() => { flashOverlay.style.opacity = 0; }, 100);
+
+            const rRect = runnerWrapper.getBoundingClientRect();
+            const tRect = focusBox.getBoundingClientRect();
+            const rCenter = rRect.left + rRect.width / 2;
+            const tCenter = tRect.left + tRect.width / 2;
+            const diff = Math.abs(rCenter - tCenter);
+            const limit = (tRect.width / 2) + currentConfig.allow;
+
+            if (diff <= limit) {
+                handleSuccess(diff);
+            } else {
+                handleFail(diff, limit); // diff 전달 (Near Miss 판정용)
+            }
+        }
+
+        function handleSuccess(diff) {
+            let basePoints = currentConfig.points;
+
+            // 레어 몹 점수 보정
+            if (currentMob.isRare && currentMob.scoreMod) {
+                basePoints = Math.floor(basePoints * currentMob.scoreMod);
+            }
+
+            let multiplier = 1;
+            let msg = "SUCCESS!";
+            let bonusText = "";
+
+            // 패스 횟수에 따른 보너스
+            if (currentPassCount === 1) { multiplier = 3; msg = "⚡ LIGHTNING!"; bonusText = "(x3)"; }
+            else if (currentPassCount === 2) { multiplier = 1.5; msg = "💨 QUICK!"; bonusText = "(x1.5)"; }
+
+            // 퍼펙트 판정
+            if (diff < 20) {
+                basePoints = Math.floor(basePoints * 1.2);
+                msg = "🏆 PERFECT + " + msg;
+                perfectCombo++;
+                if (perfectCombo >= 3) {
+                    lives = Math.min(lives + 1, 5); // 최대 5개
+                    updateLifeUI();
+                    perfectCombo = 0;
+                    showToast("Bonus Life! ❤", "", "#ff69b4");
+                }
+            } else {
+                perfectCombo = 0;
+            }
+
+            // 돈주머니(Money Bag) 효과
+            if (currentMob.isRare && currentMob.effect === 'life') {
+                lives = Math.min(lives + 1, 5);
+                updateLifeUI();
+                msg = "💰 MONEY BAG! (+1❤)";
+            }
+
+            updateComboUI();
+
+            const finalPoints = Math.floor(basePoints * multiplier);
+            totalScore += finalPoints;
+            updateScoreUI();
+
+            // 잭팟 텍스트 강조
+            if (currentConfig.label.includes("JACKPOT")) {
+                msg = "🚨 JACKPOT!! 🚨";
+                bonusText = `+${finalPoints}`;
+            }
+
+            if (!msg.includes("MONEY")) {
+                showToast(`${msg} ${bonusText}`, `+${finalPoints}`, currentConfig.color);
+            } else {
+                showToast(msg, `+${finalPoints}`, "#FFD700");
+            }
+
+            focusBox.style.borderColor = currentConfig.color;
+            fireConfetti();
+            addLog(true, currentConfig.label, finalPoints, currentMob.char);
+
+            roundCount++;
+            setTimeout(() => { prepareRound(); }, 1500);
+        }
+
+        function handleFail(diff, limit) {
+            lives--;
+            perfectCombo = 0;
+            updateLifeUI();
+            updateComboUI();
+            addLog(false, currentConfig.label, 0, currentMob.char);
+
+            focusBox.style.borderColor = "#FF5252";
+            damageOverlay.style.opacity = 0.5;
+            setTimeout(() => damageOverlay.style.opacity = 0, 150);
+            lifeDisplay.classList.add('shake');
+            setTimeout(() => lifeDisplay.classList.remove('shake'), 400);
+
+            // Near Miss 판정 (아슬아슬하게 놓침)
+            const isNearMiss = (diff > limit) && (diff < limit + 15);
+            let failTitle = "MISS...";
+            if (isNearMiss) failTitle = "까비!! 😱 (한 끗 차이)";
+
+            if (lives > 0) {
+                showToast(failTitle, `남은 생명: ${lives}`, "#FF5252");
+                setTimeout(() => { prepareRound(); }, 1500);
+            } else {
+                // 게임 오버 혹은 부활 체크
+                if (!hasRevived) {
+                    setTimeout(() => { showReviveModal(); }, 1000);
+                } else {
+                    showToast("GAME OVER", "생명 소진", "#FF5252");
+                    setTimeout(() => { showGameOver(); }, 1000);
+                }
+            }
+        }
+
+        // --- 부활 및 종료 로직 ---
+        function showReviveModal() {
+            reviveModal.style.display = 'flex';
+        }
+
+        window.reviveGame = function () {
+            // 광고 보기 로직 (Mock)
+            // 실제 광고 연동 시 여기에 Rewarded Ad 코드를 넣습니다.
+            reviveModal.style.display = 'none';
+            lives = 3;
+            hasRevived = true;
+            updateLifeUI();
+            showToast("부활 완료! 🔥", "생명 3개가 충전되었습니다", "#FFD700");
+            setTimeout(() => { prepareRound(); }, 1500);
+        }
+
+        window.confirmGameOver = function () {
+            reviveModal.style.display = 'none';
+            showGameOver();
+        }
+
+        function showGameOver() {
+            finalRoundEl.innerText = roundCount;
+            finalScoreEl.innerText = totalScore;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        // --- Helper UI Functions ---
+        window.shareResult = function () {
+            const text = `📸 Snap Master 신기록!\n제 점수는 ${totalScore}점 (라운드 ${roundCount}) 입니다.\n당신의 순발력을 테스트해보세요!`;
+            if (navigator.share) {
+                navigator.share({ title: 'Snap Master', text: text, url: window.location.href }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text + "\n" + window.location.href).then(() => {
+                    alert("결과가 복사되었습니다!");
+                });
+            }
+        }
+
+        function updateLifeUI() {
+            let hearts = "";
+            for (let i = 0; i < lives; i++) hearts += "❤";
+            if (lives === 0) hearts = "💔";
+            lifeDisplay.innerText = hearts;
+        }
+
+        function updateScoreUI() {
+            totalScoreDisplay.innerText = totalScore;
+        }
+
+        function updateComboUI() {
+            comboDots.forEach((dot, idx) => {
+                if (idx < perfectCombo) dot.classList.add('combo-active');
+                else dot.classList.remove('combo-active');
+            });
+        }
+
+        function showToast(title, sub, color) {
+            toastMsg.style.display = 'block';
+            toastMsg.innerHTML = `<div style="font-size:24px; color:${color}; font-weight:900;">${title}</div><div style="font-size:14px; margin-top:5px; color:#ddd;">${sub}</div>`;
+        }
+
+        function addLog(success, difficultyLabel, score, char) {
+            const item = document.createElement('div');
+            item.className = `gallery-item ${success ? 'success' : 'fail'}`;
+            item.innerHTML = `
+                <div style="font-size:20px;">${char}</div>
+                <div style="margin-top:2px; font-size:10px;">${difficultyLabel}</div>
+                <div style="font-size:10px; opacity:0.7;">${success ? '+' + score : 'FAIL'}</div>
+            `;
+            galleryList.prepend(item);
+        }
+
+        function fireConfetti() {
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff'];
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.classList.add('confetti');
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2;
+                const v = 80 + Math.random() * 100;
+                p.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${Math.cos(angle) * v}px, ${Math.sin(angle) * v}px) scale(0)`, opacity: 0 }
+                ], { duration: 800, fill: 'forwards' });
+                viewfinder.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+
+        // [추가] 게임 시작 버튼 클릭 시 오버레이 숨기기
+        function startGameUI() {
+            const screen = document.getElementById('start-screen');
+            screen.style.opacity = '0';
+            setTimeout(() => {
+                screen.style.display = 'none';
+                restartGame(); // 기존 게임 시작 함수 호출
+            }, 500);
+        }
+
+        // [수정] 스페이스바 스크롤 방지 코드 적용
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault(); // 👈 이 줄이 스크롤을 막아줍니다!
+
+                if (gameOverScreen.style.display === 'flex') restartGame();
+                else if (isPlaying) capture();
+            }
+        });
+
+
+        //init();
+    </script>
+</body>
+
+</html>
