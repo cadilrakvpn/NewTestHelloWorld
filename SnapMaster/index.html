@@ -684,6 +684,35 @@
         .seo-content strong {
             color: #aaa;
         }
+
+        /* ▼▼▼ [모바일 화면 수정 코드 추가] ▼▼▼ */
+        @media (max-width: 600px) {
+            #game-container {
+                aspect-ratio: auto;
+                /* 강제 비율 해제 */
+                height: 80vh;
+                /* 화면 높이의 80% 사용 */
+                min-height: 550px;
+                /* 최소 이만큼은 확보 (버튼 공간 보장) */
+            }
+
+            #start-screen {
+                overflow-y: auto;
+                /* 내용이 그래도 넘치면 스크롤 생기게 함 */
+                padding-bottom: 20px;
+            }
+
+            /* 시작 화면 글자 크기 살짝 조절 */
+            #start-screen h1 {
+                font-size: 2rem !important;
+            }
+
+            #start-screen p {
+                font-size: 1rem !important;
+            }
+        }
+
+        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
     </style>
 </head>
 
