@@ -31,10 +31,16 @@
             font-family: 'Pretendard', sans-serif;
             color: white;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
+            /* Flex 제거하여 레이아웃 쏠림 해결 */
+            display: block;
+            overflow-x: hidden;
+            /* 가로 스크롤 방지 */
+        }
+
+        /* 공통 중앙 정렬 클래스 */
+        .center-content {
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* 광고 영역 */
@@ -42,9 +48,9 @@
             width: 100%;
             max-width: 800px;
             min-height: 90px;
-            height: auto;
             background: #252525;
-            margin: 10px 0;
+            margin: 10px auto;
+            /* 중앙 정렬 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -67,7 +73,53 @@
             flex-direction: column;
             overflow: hidden;
             border: 4px solid #333;
+            margin: 0 auto;
+            /* 중앙 정렬 */
         }
+
+        /* ▼▼▼ [가로 모드(Landscape) 지원 핵심 코드] ▼▼▼ */
+        @media screen and (orientation: landscape) and (max-height: 600px) {
+
+            /* 가로 모드일 때 네비게이션, 광고, 설명글 숨김 */
+            #global-nav,
+            .ad-banner,
+            .gallery-section,
+            .seo-content {
+                display: none !important;
+            }
+
+            /* 게임 화면을 꽉 차게 확장 */
+            #game-container {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
+                aspect-ratio: auto;
+                border: none;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            /* 버튼 위치 조정 */
+            .bottom-bar {
+                height: 80px;
+                /* 공간 절약 */
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                /* 반투명 */
+                border: none;
+                z-index: 50;
+            }
+
+            /* 상단 정보바 조정 */
+            .top-bar {
+                height: 60px;
+                padding: 10px 20px;
+            }
+        }
+
+        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
 
         /* 상단 바 */
         .top-bar {
@@ -132,7 +184,6 @@
             filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6));
             transition: transform 0.2s;
             color: #ff0000;
-            /* <--- 이 줄을 추가하세요 (빨간색) */
         }
 
         .shake {
@@ -201,7 +252,6 @@
             transition: border-width 0.1s, border-color 0.1s;
         }
 
-        /* 잭팟 모드 효과 (사이렌) */
         .jackpot-mode::after {
             content: '';
             position: absolute;
@@ -248,7 +298,6 @@
             }
         }
 
-        /* 신호등 클래스 */
         .signal-green {
             border: 10px solid #00E676 !important;
             box-shadow: inset 0 0 50px #00E676;
@@ -259,7 +308,6 @@
             box-shadow: inset 0 0 50px #FFD700;
         }
 
-        /* [New] HARD 모드용 주황색 */
         .signal-orange {
             border: 10px solid #FF9100 !important;
             box-shadow: inset 0 0 50px #FF9100;
@@ -283,7 +331,6 @@
             }
         }
 
-        /* 테마 */
         .theme-day {
             background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
         }
@@ -344,7 +391,6 @@
             border-bottom-width: 180px;
         }
 
-        /* 타겟 박스 */
         #focus-box {
             position: absolute;
             top: 50%;
@@ -378,7 +424,6 @@
             border-width: 0 5px 5px 0;
         }
 
-        /* 선수 컨테이너 */
         #runner-wrapper {
             position: absolute;
             top: 50%;
@@ -410,7 +455,6 @@
             }
         }
 
-        /* 하단 컨트롤 */
         .bottom-bar {
             height: 120px;
             background: #111;
@@ -437,7 +481,6 @@
             background: #ddd;
         }
 
-        /* 메시지 및 팝업 */
         #toast-msg {
             position: absolute;
             top: 40%;
@@ -455,8 +498,8 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* 부활 팝업 */
-        #revive-modal {
+        #revive-modal,
+        #game-over-screen {
             position: absolute;
             top: 0;
             left: 0;
@@ -471,14 +514,21 @@
             backdrop-filter: blur(5px);
         }
 
-        .revive-title {
+        .revive-title,
+        .go-title {
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 20px;
             color: #fff;
         }
 
-        .revive-btn {
+        .go-title {
+            font-size: 50px;
+            color: #FF5252;
+        }
+
+        .revive-btn,
+        .go-btn {
             padding: 15px 30px;
             font-size: 18px;
             font-weight: bold;
@@ -488,6 +538,9 @@
             border-radius: 50px;
             cursor: pointer;
             margin-bottom: 15px;
+        }
+
+        .revive-btn {
             animation: pulse 1s infinite;
         }
 
@@ -498,29 +551,6 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: underline;
-        }
-
-        /* Game Over 화면 */
-        #game-over-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 200;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .go-title {
-            font-size: 50px;
-            font-weight: 900;
-            color: #FF5252;
-            margin-bottom: 20px;
         }
 
         .result-stats {
@@ -554,33 +584,17 @@
             gap: 15px;
         }
 
-        .go-btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            background: #00E676;
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
         .share-btn {
             background: #3b82f6;
             color: #fff;
         }
 
-        .go-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* 갤러리 */
         .gallery-section {
             width: 100%;
             max-width: 800px;
             margin-top: 10px;
             padding: 0 10px;
+            margin: 10px auto;
         }
 
         .gallery-title {
@@ -615,18 +629,27 @@
             border-top-color: #FF5252;
         }
 
-        /* 특수 효과 */
-        #damage-overlay {
+        #damage-overlay,
+        #flash-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: red;
-            opacity: 0;
             pointer-events: none;
-            z-index: 998;
+            opacity: 0;
             transition: opacity 0.1s;
+        }
+
+        #damage-overlay {
+            background: red;
+            z-index: 998;
+        }
+
+        #flash-overlay {
+            background: white;
+            z-index: 999;
+            transition: opacity 0.15s;
         }
 
         .confetti {
@@ -641,25 +664,10 @@
             border-radius: 2px;
         }
 
-        #flash-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 999;
-            transition: opacity 0.15s;
-        }
-
-        /* SEO */
         .seo-content {
             width: 100%;
             max-width: 800px;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin: 30px auto;
             padding: 20px;
             background: #252525;
             border-radius: 10px;
@@ -677,32 +685,20 @@
             padding-bottom: 5px;
         }
 
-        .seo-content p {
-            margin-bottom: 10px;
-        }
-
-        .seo-content strong {
-            color: #aaa;
-        }
-
-        /* ▼▼▼ [모바일 화면 수정 코드 추가] ▼▼▼ */
-        @media (max-width: 600px) {
+        /* 모바일 세로 모드 대응 */
+        @media (max-width: 600px) and (orientation: portrait) {
             #game-container {
                 aspect-ratio: auto;
-                /* 강제 비율 해제 */
                 height: 80vh;
-                /* 화면 높이의 80% 사용 */
+                /* 세로로 길게 */
                 min-height: 550px;
-                /* 최소 이만큼은 확보 (버튼 공간 보장) */
             }
 
             #start-screen {
                 overflow-y: auto;
-                /* 내용이 그래도 넘치면 스크롤 생기게 함 */
                 padding-bottom: 20px;
             }
 
-            /* 시작 화면 글자 크기 살짝 조절 */
             #start-screen h1 {
                 font-size: 2rem !important;
             }
@@ -711,8 +707,6 @@
                 font-size: 1rem !important;
             }
         }
-
-        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
     </style>
 </head>
 
