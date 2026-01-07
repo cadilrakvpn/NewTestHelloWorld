@@ -31,9 +31,10 @@
             font-family: 'Pretendard', sans-serif;
             color: white;
             min-height: 100vh;
+            /* Flex 제거 및 스크롤 허용으로 상단바 겹침 해결 */
             display: block;
-            /* overflow: hidden; 제거 또는 auto로 변경하여 스크롤 허용 */
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
         /* 공통 중앙 정렬 클래스 */
@@ -49,7 +50,6 @@
             min-height: 90px;
             background: #252525;
             margin: 10px auto;
-            /* 중앙 정렬 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -59,7 +59,7 @@
             overflow: hidden;
         }
 
-        /* 네비게이션 바가 들어올 자리 확보를 위해 게임 컨테이너 마진 조정 */
+        /* 게임 컨테이너 */
         #game-container {
             position: relative;
             width: 100%;
@@ -73,14 +73,14 @@
             overflow: hidden;
             border: 4px solid #333;
 
-            /* 상단 네비게이션과 겹치지 않도록 마진 추가 */
+            /* [수정] 상단 네비게이션과 겹치지 않도록 마진 및 최소 높이 추가 */
             margin: 20px auto;
+            min-height: 600px;
         }
 
-        /* ▼▼▼ [가로 모드(Landscape) 지원 핵심 코드] ▼▼▼ */
+        /* ▼▼▼ [가로 모드(Landscape) 지원] ▼▼▼ */
         @media screen and (orientation: landscape) and (max-height: 600px) {
 
-            /* 가로 모드일 때 네비게이션, 광고, 설명글 숨김 */
             #global-nav,
             .ad-banner,
             .gallery-section,
@@ -88,7 +88,6 @@
                 display: none !important;
             }
 
-            /* 게임 화면을 꽉 차게 확장 */
             #game-container {
                 width: 100vw;
                 height: 100vh;
@@ -97,25 +96,65 @@
                 border: none;
                 border-radius: 0;
                 margin: 0;
+                min-height: 0;
+                /* 가로 모드에서는 해제 */
             }
 
-            /* 버튼 위치 조정 */
             .bottom-bar {
                 height: 80px;
-                /* 공간 절약 */
                 position: absolute;
                 bottom: 0;
                 width: 100%;
                 background: rgba(0, 0, 0, 0.5);
-                /* 반투명 */
                 border: none;
                 z-index: 50;
             }
 
-            /* 상단 정보바 조정 */
             .top-bar {
                 height: 60px;
                 padding: 10px 20px;
+            }
+        }
+
+        /* ▼▼▼ [수정] 모바일 세로 모드 (버튼 가림 해결) ▼▼▼ */
+        @media (max-width: 600px) and (orientation: portrait) {
+            #game-container {
+                width: 95%;
+                /* 좌우 여백 */
+                height: 85vh;
+                /* 화면 높이의 85% */
+                min-height: 550px;
+                margin: 10px auto;
+                aspect-ratio: auto;
+            }
+
+            /* 시작 화면: 중앙 정렬 해제 및 스크롤 허용 */
+            #start-screen {
+                justify-content: flex-start !important;
+                padding-top: 40px !important;
+                overflow-y: auto;
+            }
+
+            #start-screen h1 {
+                font-size: 2rem !important;
+                margin-bottom: 5px !important;
+            }
+
+            #start-screen p {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 20px !important;
+            }
+
+            #start-screen div {
+                padding: 10px !important;
+                margin-bottom: 20px !important;
+                font-size: 0.85rem !important;
+            }
+
+            /* 버튼 하단 여백 확보 */
+            #start-screen button {
+                margin-bottom: 50px;
             }
         }
 
@@ -683,29 +722,6 @@
             margin-bottom: 10px;
             border-bottom: 1px solid #444;
             padding-bottom: 5px;
-        }
-
-        /* 모바일에서 게임 화면이 너무 꽉 차지 않도록 패딩 조정 */
-        @media (max-width: 600px) {
-            #game-container {
-                margin: 10px auto;
-                width: 95%;
-                /* 좌우 여백 살짝 둠 */
-            }
-        }
-
-        #start-screen {
-            overflow-y: auto;
-            padding-bottom: 20px;
-        }
-
-        #start-screen h1 {
-            font-size: 2rem !important;
-        }
-
-        #start-screen p {
-            font-size: 1rem !important;
-        }
         }
     </style>
 </head>
