@@ -29,21 +29,21 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* --- 디자인 스타일 --- */
         body {
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            /* 폰트 통일 */
             background-color: #f1f3f5;
             color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            /* display: flex; 제거 -> 일반 문서 흐름(Block)으로 변경 */
         }
 
         .container {
             max-width: 500px;
             width: 100%;
+            /* Flex 제거에 따른 중앙 정렬 방식 변경 (Article과 동일) */
+            margin: 0 auto;
             padding: 20px;
             box-sizing: border-box;
             background: #fff;
