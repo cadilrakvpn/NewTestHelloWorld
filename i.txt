@@ -4,6 +4,7 @@ HTML 파일 생성
  -  body 최상단에 <div id="global-nav"></div> <script src="/js/navbar.js"></script> 포함 필수
  - (Canonical 주소 수정 필수)
  - <script src="/js/article_ad.js"></script> 포함 필수
+ - 중간중간에
 
 JS 리스트 추가 (메인 화면용)
 
