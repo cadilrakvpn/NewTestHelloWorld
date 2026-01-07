@@ -33,10 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 height: 100%;
             ">
                 <a href="/" style="text-decoration: none; color: #333; flex-shrink: 0; display: flex; align-items: center; height: 100%;">🏠 홈</a>
-                <a href="/MenuRoulette/index.html" style="text-decoration: none; color: #333; flex-shrink: 0; display: flex; align-items: center; height: 100%;">🍽️ 메뉴룰렛</a>
-                <a href="/SnapMaster/index.html" style="text-decoration: none; color: #333; flex-shrink: 0; display: flex; align-items: center; height: 100%;">⚡ 스냅마스터</a>
-                <a href="/Articles/lunch_tips.html" style="text-decoration: none; color: #1971c2; flex-shrink: 0; display: flex; align-items: center; height: 100%;">📖 꿀팁:점심</a>
-                <a href="/Articles/reflex_tips.html" style="text-decoration: none; color: #1971c2; flex-shrink: 0; display: flex; align-items: center; height: 100%;">📖 꿀팁:반응속도</a>
+                <a href="/MenuRoulette/" style="text-decoration: none; color: #333; flex-shrink: 0; display: flex; align-items: center; height: 100%;">🍽️ 메뉴룰렛</a>
+                <a href="/SnapMaster/" style="text-decoration: none; color: #333; flex-shrink: 0; display: flex; align-items: center; height: 100%;">⚡ 스냅마스터</a>
             </div>
         </nav>
         `;
