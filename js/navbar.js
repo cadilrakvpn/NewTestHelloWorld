@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a href="/" style="text-decoration: none; color: #333; display: flex; align-items: center; height: 100%;">🏠 홈</a>
                 <a href="/MenuRoulette/" style="text-decoration: none; color: #333; display: flex; align-items: center; height: 100%;">🍽️ 메뉴룰렛</a>
                 <a href="/SnapMaster/" style="text-decoration: none; color: #333; display: flex; align-items: center; height: 100%;">⚡ 스냅마스터</a>
+                <a href="/Lotto/" style="text-decoration: none; color: #333; display: flex; align-items: center; height: 100%;">🔮 인생 로또</a>
             </div>
         </nav>
         `;
