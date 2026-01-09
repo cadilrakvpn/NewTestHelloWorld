@@ -1,10 +1,12 @@
-/* Lotto/history.js - Firebase 연동 및 기록 관리 */
+/* Lotto/history.js - Firebase 연동 및 자동 삭제 기능 포함 */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, query, limitToLast }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import {
+    getDatabase, ref, push, onChildAdded, query, limitToLast,
+    get, remove, orderByKey, endBefore
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// MenuRoulette와 동일한 Firebase 설정
+// Firebase 설정
 const firebaseConfig = {
     apiKey: "AIzaSyB0DjOSo_SDVILv5YUcqm782tJCXNhmXpo",
     authDomain: "randomroulette-847fa.firebaseapp.com",
@@ -18,9 +20,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const historyRef = ref(db, 'lotto_history'); // 로또 전용 데이터 경로
+const historyRef = ref(db, 'lotto_history');
 
-// 세션 ID 생성 (내 기록 식별용)
+// 세션 ID 생성
 function generateSessionId() {
     let id = sessionStorage.getItem('mySessionId');
     if (!id) {
@@ -30,7 +32,7 @@ function generateSessionId() {
     return id;
 }
 
-// 공 색상 결정 헬퍼 함수
+// 공 색상 결정 함수
 function getBallColorClass(num) {
     if (num <= 10) return 'bg-yellow';
     if (num <= 20) return 'bg-blue';
@@ -39,19 +41,52 @@ function getBallColorClass(num) {
     return 'bg-green';
 }
 
-// [전역 함수] 기록 추가 (index.html에서 호출 가능하도록 window에 등록)
+// [핵심] DB 청소 함수 (최근 10개만 남기고 삭제)
+async function cleanUpOldData() {
+    try {
+        // 1. 가장 최근 10개 데이터를 가져옴
+        const last10Query = query(historyRef, limitToLast(10));
+        const snapshot = await get(last10Query);
+
+        if (snapshot.exists()) {
+            // 가져온 10개 중 가장 오래된 것(첫 번째)의 키를 찾음
+            let oldestKeptKey = null;
+            snapshot.forEach((child) => {
+                if (!oldestKeptKey) oldestKeptKey = child.key;
+            });
+
+            // 2. 그 키보다 더 오래된(이전) 데이터가 있다면 모두 찾아서 삭제
+            if (oldestKeptKey) {
+                const deleteQuery = query(historyRef, orderByKey(), endBefore(oldestKeptKey));
+                const oldDataSnapshot = await get(deleteQuery);
+
+                oldDataSnapshot.forEach((child) => {
+                    remove(child.ref); // 삭제 실행
+                });
+            }
+        }
+    } catch (e) {
+        console.error("DB 정리 중 오류:", e);
+    }
+}
+
+// [전역 함수] 기록 추가 및 청소 실행
 window.addLottoHistory = function (numbers) {
     const now = new Date();
     const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
+    // 데이터 저장
     push(historyRef, {
         time: timeStr,
         nums: numbers,
         sessionId: generateSessionId()
+    }).then(() => {
+        // 저장이 완료되면 청소 시작
+        cleanUpOldData();
     });
 };
 
-// 실시간 데이터 수신 (최근 10개만)
+// 화면 표시용 리스너 (최근 10개만)
 const recentHistoryQuery = query(historyRef, limitToLast(10));
 
 onChildAdded(recentHistoryQuery, (snapshot) => {
@@ -63,18 +98,16 @@ function renderLog(data) {
     const list = document.getElementById('historyList');
     if (!list) return;
 
-    // 안내 메시지 제거 (첫 데이터 들어올 때)
-    const emptyMsg = list.querySelector('.empty-msg');
-    if (emptyMsg) emptyMsg.remove();
+    if (list.querySelector('.empty-msg')) {
+        list.innerHTML = '';
+    }
 
     const li = document.createElement('li');
     li.className = 'history-item';
 
-    // 내 기록인지 확인 (MY 태그 표시)
     const myId = sessionStorage.getItem('mySessionId');
     const isMine = data.sessionId === myId;
 
-    // 번호 공 HTML 생성
     let ballsHtml = '';
     if (Array.isArray(data.nums)) {
         data.nums.forEach(n => {
@@ -82,7 +115,6 @@ function renderLog(data) {
         });
     }
 
-    // HTML 조립
     li.innerHTML = `
         <div style="display:flex; align-items:center; gap:8px;">
             <span class="hist-date">${data.time}</span>
@@ -91,10 +123,8 @@ function renderLog(data) {
         <div class="hist-nums">${ballsHtml}</div>
     `;
 
-    // 최신순 정렬을 위해 prepend 사용
     list.prepend(li);
 
-    // 10개 넘어가면 뒤에서부터 삭제 (화면 유지용)
     if (list.children.length > 10) {
         list.removeChild(list.lastChild);
     }
