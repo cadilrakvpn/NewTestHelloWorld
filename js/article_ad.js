@@ -20,24 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // 중복 실행 방지: 이미 내용이 있다면 건너뜀
         if (placeholder.innerHTML.trim() !== "") return;
 
-        // ▼▼▼ [테스트 코드] 빨간 테두리 및 텍스트 표시 (확인 후 삭제 필요) ▼▼▼
-        placeholder.style.border = "4px solid red";     // 빨간 테두리
-        placeholder.style.background = "#ffeaea";       // 연한 빨간 배경
-        placeholder.style.minHeight = "150px";          // 최소 높이 확보
-        placeholder.style.display = "flex";             // 글자 중앙 정렬용
-        placeholder.style.justifyContent = "center";
-        placeholder.style.alignItems = "center";
-
-        // 안내 문구 추가 (광고 위에 뜸)
-        const testText = document.createElement('div');
-        testText.innerHTML = "🚧 광고 영역 (JS 정상 작동중) 🚧<br>잠시 후 광고가 로드됩니다.";
-        testText.style.color = "red";
-        testText.style.fontWeight = "bold";
-        testText.style.textAlign = "center";
-        testText.style.position = "absolute"; // 겹쳐서 보이게 함
-        placeholder.appendChild(testText);
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
         // 실제 광고 태그 생성
         const ins = document.createElement('ins');
         ins.className = 'adsbygoogle';
