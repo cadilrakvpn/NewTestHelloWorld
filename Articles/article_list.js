@@ -4,10 +4,9 @@ const ArticleData = [
     {
         id: "power_of_boredom",
         title: "심심함은 죄가 아니다: 천재들의 멍 때리기 비법",
-        summary: "빌 게이츠와 일론 머스크가 '심심한 시간'을 갖는 이유와 디폴트 모드 네트워크의 비밀.",
-        link: "/Articles/20260112/power_of_boredom.html",
-        date: "2026-01-12",
-        thumbnail: "https://randomroulette.shop/simsim_thumbnail.png" // 또는 관련 이미지
+        desc: "빌 게이츠와 일론 머스크가 '심심한 시간'을 갖는 이유와 뇌과학적으로 증명된 디폴트 모드 네트워크(DMN)의 비밀.",
+        icon: "🤔",
+        date: "2026-01-12 14:00:00"
     },
     {
         id: "sleep_tech",
