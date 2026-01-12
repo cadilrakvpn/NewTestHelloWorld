@@ -2,6 +2,14 @@
 
 const ArticleData = [
     {
+        id: "power_of_boredom",
+        title: "심심함은 죄가 아니다: 천재들의 멍 때리기 비법",
+        summary: "빌 게이츠와 일론 머스크가 '심심한 시간'을 갖는 이유와 디폴트 모드 네트워크의 비밀.",
+        link: "/Articles/20260112/power_of_boredom.html",
+        date: "2026-01-12",
+        thumbnail: "https://randomroulette.shop/simsim_thumbnail.png" // 또는 관련 이미지
+    },
+    {
         id: "sleep_tech",
         title: "잠만 잘 자도 연봉이 오른다? 2026년 '슬립테크'와 꿀잠 루틴",
         desc: "하루 4시간을 자도 개운한 사람들의 비밀은? AI 매트리스부터 10-3-2-1 법칙까지, 수면의 질을 높이는 현실적인 가이드.",
