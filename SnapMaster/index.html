@@ -843,28 +843,8 @@
             data-ad-slot="3250792285" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-
+    <script src="game_config.js"></script>
     <script>
-        // 난이도 설정 (6단계)
-        const DifficultyPool = {
-            VERY_EASY: { label: "VERY EASY", speed: 3.5, size: 200, allow: 60, bounce: "0.8s", points: 100, signalClass: "signal-green", color: "#00E676" },
-            EASY: { label: "EASY", speed: 2.8, size: 180, allow: 55, bounce: "0.7s", points: 200, signalClass: "signal-green", color: "#00E676" },
-            NORMAL: { label: "NORMAL", speed: 2.0, size: 150, allow: 40, bounce: "0.6s", points: 300, signalClass: "signal-yellow", color: "#FFD700" },
-            HARD: { label: "HARD", speed: 1.5, size: 130, allow: 35, bounce: "0.5s", points: 500, signalClass: "signal-orange", color: "#FF9100" },
-            VERY_HARD: { label: "JACKPOT", speed: 1.2, size: 115, allow: 25, bounce: "0.4s", points: 1000, signalClass: "signal-red", color: "#FF5252" },
-            EXPERT: { label: "JACKPOT+", speed: 0.85, size: 100, allow: 20, bounce: "0.3s", points: 2000, signalClass: "signal-red", color: "#FF0000" }
-        };
-
-        const StandardChars = ['🏃', '🚴', '🐕', '🐈', '🚗', '🛵', '🐎', '🛹'];
-        const Themes = ['theme-day', 'theme-sunset', 'theme-night', 'theme-forest'];
-
-        // 레어 몹 정의 (10% 확률)
-        const RareMobs = [
-            { char: '🚀', name: "ROCKET", speedMod: 1.5, scoreMod: 2.0, effect: null }, // 로켓: 엄청 빠름, 점수 2배
-            { char: '🐢', name: "TURTLE", speedMod: 0.6, scoreMod: 0.5, effect: null }, // 거북이: 느림, 타이밍 뺏기
-            { char: '💰', name: "MONEY", speedMod: 1.0, scoreMod: 1.0, effect: 'life' } // 돈주머니: 생명력 회복
-        ];
-
         // DOM Elements
         const runnerWrapper = document.getElementById('runner-wrapper');
         const runnerBody = document.getElementById('runner-body');
@@ -912,15 +892,16 @@
         }
 
         function initDeck() {
-            // 3라운드부터 사용할 덱: EASY ~ EXPERT가 골고루 포함됨
-            // EASY(3), NORMAL(3), HARD(2), VERY_HARD(1), EXPERT(1) 비율
+            // [수정됨] 2라운드부터 바로 사용될 랜덤 덱
+            // EASY ~ EXPERT 5개 난이도를 2장씩 넣어 총 10라운드 루틴 구성 (균등 확률)
             difficultyDeck = [
-                "EASY", "EASY", "EASY",
-                "NORMAL", "NORMAL", "NORMAL",
+                "EASY", "EASY",
+                "NORMAL", "NORMAL",
                 "HARD", "HARD",
-                "VERY_HARD",
-                "EXPERT"
+                "VERY_HARD", "VERY_HARD",
+                "EXPERT", "EXPERT"
             ];
+
             shuffleDeck(difficultyDeck);
         }
 
@@ -960,18 +941,20 @@
             jackpotText.style.display = 'none';
             viewfinder.classList.remove('jackpot-mode');
 
-            // 1. 난이도 결정 (덱 시스템)
-            let typeKey = "VERY_EASY";
+            // [수정됨] 1라운드 EASY 고정, 2라운드부터 바로 랜덤 진행
+            let typeKey = "EASY";
+
             if (roundCount === 1) {
-                typeKey = "VERY_EASY"; // 1라운드 고정
-            } else if (roundCount === 2) {
-                typeKey = "EASY";      // 2라운드 고정
+                typeKey = "EASY"; // 1라운드는 EASY로 시작 (VERY_EASY 삭제됨)
             } else {
+                // 2라운드부터는 덱에서 무작위로 뽑음
                 if (difficultyDeck.length === 0) initDeck();
                 typeKey = difficultyDeck.pop();
             }
+
             currentConfig = DifficultyPool[typeKey];
 
+            // --- 이하 기존 로직 유지 ---
             // 2. 레어 몹 결정 (10% 확률)
             currentMob = { char: StandardChars[Math.floor(Math.random() * StandardChars.length)], isRare: false };
             if (Math.random() < 0.1) {
