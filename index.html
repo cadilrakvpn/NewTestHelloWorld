@@ -4,407 +4,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>심심센터 - 무료 미니게임 & 결정 도구 포털</title>
-    <meta name="description" content="심심할 땐 심심센터! 오늘 뭐 먹지 고민 해결부터 반응속도 테스트까지. 무료로 즐기는 웹 도구와 미니게임 모음집입니다.">
+    <title>심심센터 - 일상을 바꾸는 꿀팁 블로그 & 무료 도구</title>
+    <meta name="description" content="생산성, 재테크, 라이프스타일 꿀팁과 메뉴 룰렛, 반응속도 게임 등 무료 도구를 제공하는 심심센터 블로그입니다.">
     <meta name="google-site-verification" content="dqcP1sQ6SCTwUXZ0EBZQwFjeiaf9EA75cisIlsRCPbk" />
     <meta name="naver-site-verification" content="51dee47b4215d0b0c48a3220f5bc82a29da95eea" />
+    <link rel="canonical" href="https://randomroulette.shop/">
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://randomroulette.shop/">
-    <meta property="og:title" content="심심센터 - 미니게임 & 꿀팁 저장소">
-    <meta property="og:description" content="결정 장애 해결 룰렛 & 순발력 테스트 게임을 지금 바로 즐겨보세요.">
-    <meta property="og:image" content="https://randomroulette.shop/MenuRoulette/simsim_thumbnail.png">
+    <meta property="og:title" content="심심센터 - 일상을 바꾸는 꿀팁 블로그">
+    <meta property="og:description" content="생산성 향상, 재테크 팁, 라이프스타일 정보와 재미있는 무료 도구를 만나보세요.">
+    <meta property="og:image" content="https://randomroulette.shop/simsim_thumbnail.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/css/blog.css">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
         crossorigin="anonymous"></script>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Pretendard', sans-serif;
-            background: #f8f9fa;
-            color: #333;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* 헤더 */
-        header {
-            background: #fff;
-            border-bottom: 1px solid #e9ecef;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #ff6b6b;
-            letter-spacing: -1px;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 20px;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
-        .nav-menu a {
-            transition: color 0.2s;
-        }
-
-        .nav-menu a:hover {
-            color: #ff6b6b;
-        }
-
-        /* 히어로 배너 */
-        .hero {
-            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
-            padding: 80px 20px;
-            text-align: center;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero h1 {
-            margin: 0 0 15px 0;
-            font-size: 2.5rem;
-            font-weight: 800;
-        }
-
-        .hero p {
-            margin: 0;
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
-
-        /* 메인 컨테이너 */
-        .container {
-            max-width: 1000px;
-            margin: -40px auto 50px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* 그리드 레이아웃 */
-        .grid-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        /* 카드 스타일 */
-        .card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #fff;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-            border-color: #ff6b6b;
-        }
-
-        .card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #f1f3f5;
-        }
-
-        .card-body {
-            padding: 25px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-
-        .badge-food {
-            background: #ffe3e3;
-            color: #e03131;
-        }
-
-        .badge-game {
-            background: #e7f5ff;
-            color: #1971c2;
-        }
-
-        .card h2 {
-            margin: 0 0 10px 0;
-            font-size: 1.35rem;
-            font-weight: 800;
-        }
-
-        .card p {
-            margin: 0 0 20px 0;
-            color: #868e96;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            flex: 1;
-            /* 남은 여백을 차지하여 버튼을 바닥으로 밈 */
-
-            /* ▼▼▼ [추가] 텍스트가 길면 3줄에서 자르고 ... 처리 ▼▼▼ */
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            /* 최대 3줄까지만 표시 */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            word-break: keep-all;
-            /* 단어 단위로 줄바꿈 */
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px 0;
-            text-align: center;
-            border-radius: 10px;
-            font-weight: 800;
-            color: #fff;
-            transition: opacity 0.2s;
-            font-size: 1rem;
-        }
-
-        .btn-red {
-            background: #ff6b6b;
-        }
-
-        .btn-blue {
-            background: #339af0;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        /* 블로그 섹션 */
-        .blog-section {
-            background: #fff;
-            border-radius: 16px;
-            padding: 35px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .section-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #343a40;
-        }
-
-        .section-title::before {
-            content: '';
-            display: block;
-            width: 6px;
-            height: 24px;
-            background: #339af0;
-            border-radius: 3px;
-        }
-
-        .blog-list a {
-            display: flex;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #f1f3f5;
-            transition: background 0.2s;
-        }
-
-        .blog-list a:hover {
-            background: #f8f9fa;
-            padding-left: 10px;
-            padding-right: 10px;
-            margin: 0 -10px;
-            border-radius: 8px;
-        }
-
-        .blog-list a:last-child {
-            border-bottom: none;
-        }
-
-        .blog-icon {
-            font-size: 2rem;
-            margin-right: 20px;
-        }
-
-        .blog-content h3 {
-            margin: 0 0 6px 0;
-            font-size: 1.15rem;
-            color: #343a40;
-        }
-
-        .blog-content p {
-            margin: 0;
-            font-size: 0.95rem;
-            color: #adb5bd;
-        }
-
-        .badge-luck {
-            background: #fff9db;
-            color: #f08c00;
-        }
-
-        /* 푸터 */
-        footer {
-            margin-top: 60px;
-            text-align: center;
-            color: #868e96;
-            font-size: 0.85rem;
-            padding: 40px 20px;
-            background: #343a40;
-        }
-
-        footer strong {
-            color: #dee2e6;
-        }
-
-        footer a {
-            color: #ced4da;
-            text-decoration: underline;
-        }
-
-        @media(max-width: 600px) {
-            .hero {
-                padding: 60px 20px 80px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            /* 모바일에서는 상단 메뉴 숨김 */
-        }
-    </style>
 </head>
 
 <body>
+    <div id="global-nav"></div>
+    <script src="/js/navbar.js"></script>
 
-    <header>
-        <a href="/" class="logo">🎲 심심센터</a>
-        <nav class="nav-menu">
-            <a href="/MenuRoulette/">메뉴룰렛</a>
-            <a href="/SnapMaster/">스냅마스터</a>
-            <a href="/Articles/lunch_tips.html">꿀팁블로그</a>
-        </nav>
-    </header>
+    <!-- 히어로 섹션 -->
+    <section class="blog-hero">
+        <h1>🎲 일상을 바꾸는 작은 습관</h1>
+        <p>생산성, 재테크, 라이프스타일 꿀팁부터<br>심심풀이 무료 도구까지 한 곳에서 만나보세요</p>
+    </section>
 
-    <div class="hero">
-        <h1>지루할 땐, 심심센터!</h1>
-        <p>결정 장애 해결부터 두뇌 회전 게임까지<br>당신의 심심함을 무료로 처방해 드립니다.</p>
-    </div>
+    <!-- 메인 컨테이너 (2컬럼) -->
+    <div class="blog-container">
 
-    <div class="container">
-        <div class="grid-box">
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="blog-main">
 
-            <div class="card">
-                <img src="MenuRoulette/image_01a344.png" alt="점심 메뉴 추천 룰렛" class="card-img">
-                <div class="card-body">
-                    <div>
-                        <span class="card-badge badge-food">인기 도구</span>
-                        <h2>🍽️ 점심 메뉴 룰렛</h2>
-                        <p>한식, 중식, 일식, 분식... 오늘 뭐 먹을지 고민되시나요? 빅데이터 기반 랜덤 룰렛이 3초 만에 딱 정해드립니다.</p>
-                    </div>
-                    <a href="MenuRoulette/" class="btn btn-red">룰렛 돌리기 👉</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="SnapMaster/snap_thumbnail.png" alt="반응속도 테스트 게임" class="card-img">
-                <div class="card-body">
-                    <div>
-                        <span class="card-badge badge-game">미니 게임</span>
-                        <h2>⚡ 스냅 마스터 (순발력)</h2>
-                        <p>내 반응속도는 상위 몇 %일까? 움직이는 타겟을 포착하는 순발력 테스트 게임입니다. 친구와 내기해보세요!</p>
-                    </div>
-                    <a href="SnapMaster/" class="btn btn-blue">게임 시작하기 👉</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="Lotto/lotto.png" alt="인생 로또 번호 생성기" class="card-img">
-                <div class="card-body">
-                    <div>
-                        <span class="card-badge badge-luck">운세 도구</span>
-                        <h2>🔮 인생 로또 (번호 생성)</h2>
-                        <p>오늘 밤 꿈자리가 좋으신가요? 1등 당첨을 기원하며 행운의 숫자 6개를 추첨해 드립니다. 3D 애니메이션과 함께 대박 기운을 받아가세요!</p>
-                    </div>
-                    <a href="Lotto/" class="btn" style="background: #fab005; color: #fff;">번호 뽑기 👉</a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="blog-section">
-            <div
-                style="width: 100%; max-width: 1000px; margin: 30px auto; text-align: center; background: #fff; padding: 20px; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                <p style="font-size: 12px; color: #aaa; margin-bottom: 10px;">ADVERTISEMENT</p>
-
+            <!-- 상단 광고 -->
+            <div class="ad-container" style="margin-bottom: 30px;">
+                <div class="ad-label">ADVERTISEMENT</div>
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
                     data-ad-slot="3765781697" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
-            <div class="section-title">📖 심심 타파 꿀팁 매거진</div>
 
-            <div class="blog-list" id="blog-list-container"></div>
+            <!-- 최신 포스팅 섹션 -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">📖 최신 포스팅</h2>
+                </div>
 
-            <script src="Articles/article_list.js"></script>
-            <script src="js/load_articles.js"></script>
+                <div class="article-grid" id="article-grid-container" data-count="10"></div>
 
+                <button class="load-more-btn" onclick="loadMoreArticles()">더 많은 글 보기 ↓</button>
+            </section>
+
+        </main>
+
+        <!-- 사이드바 -->
+        <aside class="blog-sidebar">
+
+            <!-- 프로필 위젯 -->
+            <div class="sidebar-widget profile-widget">
+                <div class="profile-avatar">🎲</div>
+                <div class="profile-name">심심센터</div>
+                <p class="profile-desc">일상 속 작은 변화가<br>큰 차이를 만듭니다</p>
+                <a href="/about.html" class="profile-link">소개 보기</a>
+            </div>
+
+            <!-- 카테고리 위젯 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📂 카테고리</h3>
+                <ul class="category-list" id="category-list">
+                    <li><a href="#" onclick="return filterByCategory('all')">📋 전체 <span class="category-count"
+                                id="count-all">15</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('game')">🎮 게임 <span class="category-count"
+                                id="count-game">0</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('productivity')">🧠 생산성 <span
+                                class="category-count" id="count-productivity">0</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('money')">💰 재테크 <span class="category-count"
+                                id="count-money">0</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('life')">🌿 라이프 <span class="category-count"
+                                id="count-life">0</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('health')">💪 건강 <span class="category-count"
+                                id="count-health">0</span></a></li>
+                    <li><a href="#" onclick="return filterByCategory('tip')">💡 꿀팁 <span class="category-count"
+                                id="count-tip">0</span></a></li>
+                </ul>
+            </div>
+
+            <!-- 인기 글 위젯 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">🔥 인기 글</h3>
+                <div class="popular-list" id="popular-articles"></div>
+            </div>
+
+            <!-- 도구 바로가기 위젯 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">🛠️ 무료 도구</h3>
+                <div class="tools-grid">
+                    <a href="/MenuRoulette/" class="tool-card">
+                        <div class="tool-icon">🍽️</div>
+                        <div class="tool-name">메뉴 룰렛</div>
+                    </a>
+                    <a href="/SnapMaster/" class="tool-card">
+                        <div class="tool-icon">⚡</div>
+                        <div class="tool-name">반응속도</div>
+                    </a>
+                    <a href="/Lotto/" class="tool-card">
+                        <div class="tool-icon">🔮</div>
+                        <div class="tool-name">로또 생성</div>
+                    </a>
+                    <a href="/about.html" class="tool-card">
+                        <div class="tool-icon">📌</div>
+                        <div class="tool-name">소개</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 사이드바 광고 -->
+            <div class="ad-container">
+                <div class="ad-label">ADVERTISEMENT</div>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6146654241046448"
+                    data-ad-slot="2936109279" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="blog-footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-section">
+                    <h4>심심센터</h4>
+                    <p>일상의 작은 불편함을 해결하고,<br>더 나은 삶을 위한 정보를 공유합니다.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>바로가기</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">홈</a></li>
+                        <li><a href="/about.html">소개</a></li>
+                        <li><a href="/privacy.html">개인정보처리방침</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>무료 도구</h4>
+                    <ul class="footer-links">
+                        <li><a href="/MenuRoulette/">메뉴 룰렛</a></li>
+                        <li><a href="/SnapMaster/">스냅 마스터</a></li>
+                        <li><a href="/Lotto/">인생 로또</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>문의</h4>
+                    <p>cadilrak@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 심심센터 (Simsim Center). All rights reserved. | <a href="/privacy.html">개인정보처리방침</a></p>
+            </div>
         </div>
+    </footer>
 
-        <footer>
-            <div style="max-width: 800px; margin: 0 auto; text-align: left;">
-                <p style="margin-bottom: 10px;"><strong>심심센터 (Simsim Center)</strong></p>
-                <p>
-                    심심센터는 사용자의 무료한 시간을 즐거움으로 채워드리기 위해 제작된 웹 서비스 플랫폼입니다.
-                    복잡한 설치나 회원가입 없이 누구나 즉시 이용할 수 있습니다.
-                </p>
-                <p
-                    style="margin-top: 20px; border-top: 1px solid #555; padding-top: 20px; font-size: 0.8rem; color: #adb5bd;">
-                    © 2026 Simsim Center. All rights reserved. | <a href="privacy.html">개인정보처리방침</a>
-                    문의: cadilrak@gmail.com
-                </p>
-            </div>
-        </footer>
+    <!-- 아티클 데이터 및 렌더링 스크립트 -->
+    <script src="/Articles/article_list.js"></script>
+    <script src="/js/load_articles.js"></script>
 
+    <script>
+        // 페이지 로드 시 카테고리 카운트 업데이트
+        document.addEventListener("DOMContentLoaded", function () {
+            // 인기 글 렌더링
+            renderPopularArticles('popular-articles', 5);
+
+            // 카테고리 카운트 업데이트
+            const counts = getCategoryCounts();
+
+            // 전체 글 개수
+            let totalCount = 0;
+            Object.keys(counts).forEach(cat => {
+                const el = document.getElementById('count-' + cat);
+                if (el) el.textContent = counts[cat];
+                totalCount += counts[cat];
+            });
+
+            // 전체 카운트 업데이트
+            const allEl = document.getElementById('count-all');
+            if (allEl) allEl.textContent = totalCount;
+        });
+
+        // 더 많은 글 로드
+        function loadMoreArticles() {
+            const gridContainer = document.getElementById('article-grid-container');
+            const currentCount = parseInt(gridContainer.dataset.count) || 10;
+            gridContainer.dataset.count = currentCount + 10;
+            renderArticleGrid(_currentFilter);
+        }
+    </script>
 </body>
 
 </html>
