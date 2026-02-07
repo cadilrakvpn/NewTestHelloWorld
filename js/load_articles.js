@@ -85,8 +85,8 @@ function renderArticleGrid(category) {
 
         const catInfo = _categories[article.category] || { name: "기타", class: "category-tip" };
 
-        // 썸네일이 있는 아티클은 모두 가로형
-        const cardClass = article.thumbnail ? 'article-card article-card-horizontal' : 'article-card';
+        // 모든 아티클을 가로형으로 표시
+        const cardClass = 'article-card article-card-horizontal';
 
         // 썸네일이 있으면 이미지, 없으면 아이콘
         const thumbnailContent = article.thumbnail
