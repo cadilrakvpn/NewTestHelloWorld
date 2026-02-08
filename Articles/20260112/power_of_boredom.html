@@ -9,6 +9,7 @@
     <meta name="description"
         content="할 일이 없을 때 불안함을 느끼시나요? 빌 게이츠와 일론 머스크가 의도적으로 '심심한 시간'을 갖는 이유와 뇌과학적으로 증명된 '디폴트 모드 네트워크'의 비밀을 공개합니다.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/css/comments.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
         crossorigin="anonymous"></script>
     <style>
@@ -118,9 +119,16 @@
 <body>
     <div id="global-nav"></div>
     <script src="/js/navbar.js"></script>
+    <script type="module" src="/js/auth.js"></script>
 
     <div class="container">
         <h1>🤔 심심함은 죄가 아니다: 천재들이 '멍 때리기'에 집착하는 이유</h1>
+        <div class="date-info">
+            2026. 01. 12. 생산성
+            <span class="view-count" style="margin-left: 10px; color: #888;">
+                👁️ <span id="viewCount">...</span>
+            </span>
+        </div>
 
         <p>현대 사회에서 '심심함'은 마치 게으름의 상징처럼 여겨집니다. 잠시라도 시간이 비면 우리는 습관적으로 스마트폰을 켜고, 1분 1초도 낭비하지 않으려 애씁니다. 하지만 역설적으로, 인류 역사상 가장
             위대한 아이디어들은 대부분 <strong>'가장 심심한 순간'</strong>에 탄생했습니다.</p>
@@ -150,7 +158,8 @@
         <h3>1. 의도적인 '결정 배제'</h3>
         <p>우리의 뇌는 하루에 수천 번의 선택을 하며 지쳐갑니다. 점심 메뉴를 고르는 것조차 뇌에는 스트레스입니다. 가끔은 내 의지를 내려놓고 <a
                 href="/MenuRoulette/index.html">메뉴 룰렛</a>이나 <a href="/Lotto/index.html">운세 도구</a> 같은
-            <strong>'무작위성'</strong>에 맡겨보세요. 선택의 책임에서 벗어나는 순간, 뇌는 해방감을 느낍니다.</p>
+            <strong>'무작위성'</strong>에 맡겨보세요. 선택의 책임에서 벗어나는 순간, 뇌는 해방감을 느낍니다.
+        </p>
 
         <h3>2. 디지털 없는 5분 산책</h3>
         <p>스티브 잡스는 중요한 회의를 항상 산책하며 진행했습니다. 발바닥의 자극은 뇌 혈류량을 증가시킵니다. 이때 이어폰을 꽂지 않는 것이 핵심입니다. 오직 걷는 행위에만 집중하면 뇌는 자연스럽게 명상
@@ -172,7 +181,44 @@
             <br><br>
             <strong>"심심함은 당신의 뇌가 천재성을 발휘하기 위해 보내는 신호입니다."</strong>
         </div>
+
+        <!-- 댓글 섹션 -->
+        <div class="comment-section">
+            <div class="comment-section-title">💬 댓글</div>
+            <div class="login-area">
+                <div id="loginPrompt" class="login-prompt">
+                    <span>구글 계정으로 로그인하면 더 편하게 댓글을 작성할 수 있어요!</span>
+                    <button class="google-login-btn" onclick="googleLogin()">🔐 Google 로그인</button>
+                </div>
+                <div id="loggedInInfo" class="logged-in-info">
+                    <span class="user-avatar">👤</span>
+                    <span><strong id="userName"></strong> 님으로 로그인됨</span>
+                    <span id="adminBadgeInfo" class="admin-badge-info">👑 관리자</span>
+                    <button class="logout-btn" onclick="googleLogout()">로그아웃</button>
+                </div>
+            </div>
+            <div class="comment-form">
+                <div id="loggedInForm" class="logged-in-form">
+                    <textarea id="loggedInCommentContent" placeholder="댓글을 입력하세요..." maxlength="500"></textarea>
+                    <button class="comment-submit-btn" onclick="submitLoggedInComment()">댓글 작성</button>
+                </div>
+                <div id="guestForm" class="guest-form">
+                    <div class="or-divider">또는 비로그인으로 작성</div>
+                    <div class="form-row">
+                        <input type="text" id="guestNickname" placeholder="닉네임" maxlength="20">
+                        <input type="password" id="guestPassword" placeholder="비밀번호 (삭제 시 필요)">
+                    </div>
+                    <textarea id="guestCommentContent" placeholder="댓글을 입력하세요..." maxlength="500"></textarea>
+                    <button class="comment-submit-btn" onclick="submitGuestComment()">댓글 작성</button>
+                    <div class="form-hint">* 비밀번호는 본인 댓글 삭제 시 필요합니다.</div>
+                </div>
+            </div>
+            <div id="commentList" class="comment-list"></div>
+        </div>
     </div>
+
+    <script type="module" src="/js/comments.js"></script>
+    <script type="module" src="/js/views.js"></script>
 </body>
 
 </html>

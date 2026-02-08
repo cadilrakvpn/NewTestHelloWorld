@@ -100,6 +100,7 @@ function renderArticleGrid(category) {
                     <div class="article-meta">
                         <span class="article-category ${catInfo.class}">${catInfo.name}</span>
                         <span class="article-date">${displayDate}</span>
+                        <span class="article-view-count" data-path="/${linkPath}" style="font-size: 0.8rem; color: #888; margin-left: 8px; opacity: 0; transition: opacity 0.3s;">👁️ ...</span>
                     </div>
                     <h3 class="article-title">${article.title}</h3>
                     <p class="article-excerpt">${article.desc}</p>
@@ -113,6 +114,34 @@ function renderArticleGrid(category) {
 
     // 사이드바 카테고리 활성화 상태 업데이트
     updateCategoryActiveState(category);
+
+    // 조회수 업데이트 (비동기)
+    updateViewCountsFromFirebase();
+}
+
+// Firebase 조회수 가져오기 및 업데이트
+async function updateViewCountsFromFirebase() {
+    if (typeof window.getAllViewCounts !== 'function') {
+        // views.js가 아직 로드되지 않았으면 이벤트 리스너 등록
+        window.addEventListener('viewsReady', updateViewCountsFromFirebase, { once: true });
+        return;
+    }
+
+    const allViews = await window.getAllViewCounts();
+    const viewElements = document.querySelectorAll('.article-view-count');
+
+    viewElements.forEach(el => {
+        const articlePath = el.dataset.path.replace(/\.html$/, ''); // .html 제거 후 ID 생성
+        // views.js와 동일한 ID 생성 로직 사용
+        const viewId = articlePath.replace(/[^a-zA-Z0-9]/g, '_');
+
+        if (allViews[viewId]) {
+            el.innerHTML = `👁️ ${allViews[viewId].toLocaleString()}`;
+        } else {
+            el.innerHTML = `👁️ 0`;
+        }
+        el.style.opacity = '1';
+    });
 }
 
 // 카테고리 필터 함수 (전역)

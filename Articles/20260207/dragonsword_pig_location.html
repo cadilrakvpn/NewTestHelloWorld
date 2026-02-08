@@ -27,10 +27,46 @@
     <meta name="twitter:description" content="별이 잠든 나무~짙은 안개 지대 사이 멧돼지 꿀스팟! 미트 스튜 재료 수급 필수 가이드">
     <meta name="twitter:image" content="https://randomroulette.shop/Articles/20260207/dragonsword_piglocation.png">
 
+    <!-- 깜박임 방지: 가장 먼저 실행! 모든 CSS 로드 전에 html 클래스 추가 -->
+    <script>
+        if (localStorage.getItem('auth_logged_in') === 'true') {
+            document.documentElement.classList.add('was-logged-in');
+        }
+    </script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/css/comments.css?v=2">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6146654241046448"
         crossorigin="anonymous"></script>
+
     <style>
+        /* 기본: 모든 인증 관련 요소 숨김 */
+        .comment-section {
+            display: none;
+        }
+
+        /* JS에서 auth-ready 클래스 추가 시에만 표시 */
+        .comment-section.auth-ready {
+            display: block;
+        }
+
+        /* 이전에 로그인된 상태라면: 로그인 버튼 숨기고 로그인 정보 표시 (깜박임 방지) */
+        html.was-logged-in #loginPrompt {
+            display: none !important;
+        }
+
+        html.was-logged-in #loggedInInfo {
+            display: flex !important;
+        }
+
+        html.was-logged-in #guestForm {
+            display: none !important;
+        }
+
+        html.was-logged-in #loggedInForm {
+            display: block !important;
+        }
+
         body {
             margin: 0;
             font-family: 'Pretendard', sans-serif;
@@ -244,10 +280,16 @@
 <body>
     <div id="global-nav"></div>
     <script src="/js/navbar.js"></script>
+    <script type="module" src="/js/auth.js"></script>
 
     <div class="container">
         <h1>🐗 드래곤소드 멧돼지 파밍 위치 총정리</h1>
-        <div class="date-info">2026. 02. 07. 게임/가이드</div>
+        <div class="date-info">
+            2026. 02. 07. 게임/가이드
+            <span class="view-count" style="margin-left: 10px; color: #888;">
+                👁️ <span id="viewCount">...</span>
+            </span>
+        </div>
 
         <p>드래곤소드에서 요리 만들려면 <span class="highlight">고기류</span>가 필수인데, 멧돼지가 제일 수급하기 편합니다. 오늘은 멧돼지가 많이 스폰되는 위치를 정리해봤어요.</p>
 
@@ -290,7 +332,51 @@
             style="color: #868e96; font-size: 0.9rem; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef;">
             ※ 본 정보는 게임 업데이트에 따라 변경될 수 있습니다.
         </p>
+
+        <!-- 댓글 섹션 -->
+        <div class="comment-section">
+            <div class="comment-section-title">💬 댓글</div>
+
+            <!-- 로그인 상태 영역 -->
+            <div class="login-area">
+                <div id="loginPrompt" class="login-prompt">
+                    <span>구글 계정으로 로그인하면 더 편하게 댓글을 작성할 수 있어요!</span>
+                    <button class="google-login-btn" onclick="googleLogin()">🔐 Google 로그인</button>
+                </div>
+                <div id="loggedInInfo" class="logged-in-info">
+                    <span class="user-avatar">👤</span>
+                    <span><strong id="userName"></strong> 님으로 로그인됨</span>
+                    <span id="adminBadgeInfo" class="admin-badge-info">👑 관리자</span>
+                    <button class="logout-btn" onclick="googleLogout()">로그아웃</button>
+                </div>
+            </div>
+
+            <div class="comment-form">
+                <!-- 로그인 사용자 폼 -->
+                <div id="loggedInForm" class="logged-in-form">
+                    <textarea id="loggedInCommentContent" placeholder="댓글을 입력하세요..." maxlength="500"></textarea>
+                    <button class="comment-submit-btn" onclick="submitLoggedInComment()">댓글 작성</button>
+                </div>
+
+                <!-- 비로그인 사용자 폼 -->
+                <div id="guestForm" class="guest-form">
+                    <div class="or-divider">또는 비로그인으로 작성</div>
+                    <div class="form-row">
+                        <input type="text" id="guestNickname" placeholder="닉네임" maxlength="20">
+                        <input type="password" id="guestPassword" placeholder="비밀번호 (삭제 시 필요)">
+                    </div>
+                    <textarea id="guestCommentContent" placeholder="댓글을 입력하세요..." maxlength="500"></textarea>
+                    <button class="comment-submit-btn" onclick="submitGuestComment()">댓글 작성</button>
+                    <div class="form-hint">* 비밀번호는 본인 댓글 삭제 시 필요합니다.</div>
+                </div>
+            </div>
+
+            <div id="commentList" class="comment-list"></div>
+        </div>
     </div>
+
+    <script type="module" src="/js/comments.js"></script>
+    <script type="module" src="/js/views.js"></script>
 </body>
 
 </html>
