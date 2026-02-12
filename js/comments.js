@@ -113,15 +113,25 @@ function updateAuthUI() {
         if (userName) userName.textContent = currentUser.displayName || currentUser.email;
         if (adminBadge) adminBadge.style.display = isAdmin ? 'inline' : 'none';
     } else {
-        if (guestForm) guestForm.style.display = 'block';
+        // 비회원 상태: 게스트 폼 표시
+        if (guestForm) {
+            guestForm.style.display = 'block';
+            console.log("updateAuthUI: 게스트 폼 표시"); // 디버깅용
+        }
         if (loggedInForm) loggedInForm.style.display = 'none';
-        if (loginPrompt) loginPrompt.style.display = 'block';
+        if (loginPrompt) {
+            loginPrompt.style.display = 'block';
+            console.log("updateAuthUI: 로그인 프롬프트 표시"); // 디버깅용
+        }
         if (loggedInInfo) loggedInInfo.style.display = 'none';
     }
 
-    // 인증 체크 완료 후 댓글 섹션 표시
+    // 인증 체크 완료 후 댓글 섹션 표시 (항상)
     const commentSection = document.querySelector('.comment-section');
-    if (commentSection) commentSection.classList.add('auth-ready');
+    if (commentSection) {
+        commentSection.classList.add('auth-ready');
+        commentSection.style.display = 'block'; // 강제로 표시
+    }
 }
 
 // 삭제 버튼 업데이트
@@ -471,12 +481,19 @@ function checkEmptyComments() {
 
 // 초기화
 document.addEventListener("DOMContentLoaded", async () => {
-    // 댓글 섹션 즉시 표시 (비회원도 사용 가능하도록)
+    // 댓글 섹션 즉시 표시 및 기본 UI 설정 (비회원 우선)
     const commentSection = document.querySelector('.comment-section');
+    const guestForm = document.getElementById('guestForm');
+    const loginPrompt = document.getElementById('loginPrompt');
+
     if (commentSection) {
         commentSection.classList.add('auth-ready');
+        commentSection.style.display = 'block';
     }
 
+    // 기본적으로 비회원 폼 표시 (인증 상태 확인 전까지)
+    if (guestForm) guestForm.style.display = 'block';
+    if (loginPrompt) loginPrompt.style.display = 'block';
     const articleId = getArticleId();
     const commentsRef = ref(db, `comments/${articleId}`);
 
