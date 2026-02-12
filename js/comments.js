@@ -471,6 +471,12 @@ function checkEmptyComments() {
 
 // 초기화
 document.addEventListener("DOMContentLoaded", async () => {
+    // 댓글 섹션 즉시 표시 (비회원도 사용 가능하도록)
+    const commentSection = document.querySelector('.comment-section');
+    if (commentSection) {
+        commentSection.classList.add('auth-ready');
+    }
+
     const articleId = getArticleId();
     const commentsRef = ref(db, `comments/${articleId}`);
 
