@@ -56,7 +56,7 @@ const ArticleData = [
         title: "멀티태스킹의 거짓말: 당신의 뇌는 동시에 일할 수 없다",
         desc: "유튜브 보면서 공부하기? 업무 중에 메신저 답장하기? 뇌의 작업 전환 비용(Switching Cost) 때문에 실제 지능지수가 15점이나 떨어진다는 연구 결과.",
         icon: "🤯",
-        date: "2026-01-13 09:00:00",
+        date: "2026-01-12 09:00:00",
         category: "productivity"
     },
     {
@@ -128,7 +128,7 @@ const ArticleData = [
         title: "게임 반응속도(피지컬) 올리는 훈련법",
         desc: "FPS 게이머 필독! 동체시력과 반사신경을 깨우는 과학적인 훈련 가이드.",
         icon: "⏱️",
-        date: "2026-01-04 09:00:00",
+        date: "2026-01-07 09:00:00",
         category: "tip"
     },
     {
@@ -136,7 +136,7 @@ const ArticleData = [
         title: "결정 피로(Decision Fatigue)란?",
         desc: "저녁마다 배달앱만 30분 켜놓는 당신, 우유부단한 게 아니라 뇌가 지친 겁니다.",
         icon: "🧠",
-        date: "2026-01-03 18:20:00",
+        date: "2026-01-07 18:20:00",
         category: "productivity"
     }
 ];

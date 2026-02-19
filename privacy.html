@@ -5,65 +5,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>개인정보처리방침 - 심심센터</title>
+    <meta name="description" content="심심센터의 개인정보처리방침입니다. 이용자의 개인정보를 어떻게 처리하는지 안내합니다.">
+    <link rel="canonical" href="https://randomroulette.shop/privacy.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://randomroulette.shop/privacy.html">
+    <meta property="og:title" content="개인정보처리방침 - 심심센터">
+    <meta property="og:description" content="심심센터의 개인정보처리방침입니다.">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/css/blog.css">
+
     <style>
-        body {
-            font-family: sans-serif;
-            line-height: 1.6;
-            padding: 20px;
+        .privacy-container {
             max-width: 800px;
             margin: 0 auto;
-            color: #333;
+            padding: 60px 20px;
         }
 
-        h1 {
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 50px;
         }
 
-        h2 {
-            margin-top: 30px;
-            color: #555;
+        .privacy-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            color: var(--text-color);
         }
 
-        .back-btn {
-            display: inline-block;
+        .privacy-header p {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .privacy-section {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 35px 40px;
             margin-bottom: 20px;
-            text-decoration: none;
-            color: #666;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .privacy-section h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .privacy-section p {
+            font-size: 1rem;
+            line-height: 1.85;
+            margin: 0 0 12px 0;
+            color: var(--text-color);
+        }
+
+        .privacy-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .privacy-section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .privacy-section ul li {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--text-color);
+            margin-bottom: 6px;
+        }
+
+        .privacy-section a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .privacy-date {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 600px) {
+            .privacy-section {
+                padding: 25px 20px;
+            }
+
+            .privacy-header h1 {
+                font-size: 1.7rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <a href="/" class="back-btn">← 메인으로 돌아가기</a>
-    <h1>개인정보처리방침 (Privacy Policy)</h1>
+    <div id="global-nav"></div>
+    <script src="/js/navbar.js"></script>
 
-    <p>본 방침은 <strong>심심센터</strong>(이하 '사이트')가 제공하는 서비스와 관련하여 이용자의 개인정보를 어떻게 처리하는지 설명합니다.</p>
+    <div class="privacy-container">
+        <div class="privacy-header">
+            <h1>🔒 개인정보처리방침</h1>
+            <p>시행일자: 2026년 1월 1일 &nbsp;|&nbsp; 심심센터 (Simsim Center)</p>
+        </div>
 
-    <h2>1. 개인정보의 수집 및 이용</h2>
-    <p>본 사이트는 회원가입이나 로그인 없이 이용 가능하며, 이용자의 이름, 전화번호 등 직접적인 개인정보를 수집하지 않습니다. 다만, 서비스 개선을 위해 다음과 같은 정보가 자동으로 생성되어 수집될 수
-        있습니다.</p>
-    <ul>
-        <li>접속 로그, 쿠키(Cookie), 접속 IP 정보, 브라우저 및 OS 종류</li>
-    </ul>
+        <div class="privacy-section">
+            <h2>📋 1. 개인정보의 수집 및 이용</h2>
+            <p>본 사이트 <strong>심심센터</strong>는 회원가입이나 로그인 없이 모든 콘텐츠를 이용할 수 있으며, 이용자의 이름·전화번호 등 직접적인 개인정보를 수집하지 않습니다.</p>
+            <p>다만, 서비스 개선을 위해 아래 정보가 자동으로 수집될 수 있습니다.</p>
+            <ul>
+                <li>접속 로그, 쿠키(Cookie)</li>
+                <li>접속 IP, 브라우저 및 OS 종류</li>
+                <li>페이지 열람 기록 (통계 목적)</li>
+            </ul>
+        </div>
 
-    <h2>2. 구글 애드센스 (Google AdSense)</h2>
-    <p>본 사이트는 광고 게재를 위해 구글 애드센스 서비스를 이용하고 있습니다.</p>
-    <ul>
-        <li>구글을 포함한 제3자 공급업체는 쿠키를 사용하여 사용자의 과거 웹사이트 방문 기록을 바탕으로 광고를 게재합니다.</li>
-        <li>사용자는 <a href="https://adssettings.google.com/authenticated" target="_blank">광고 설정</a>을 방문하여 맞춤광고를 사용 중지할 수
-            있습니다.</li>
-    </ul>
+        <div class="privacy-section">
+            <h2>📢 2. 구글 애드센스 (Google AdSense)</h2>
+            <p>본 사이트는 콘텐츠 운영 비용 충당을 위해 구글 애드센스 광고 서비스를 이용합니다.</p>
+            <ul>
+                <li>구글을 포함한 제3자 공급업체는 쿠키를 사용하여 이용자의 과거 방문 기록을 바탕으로 광고를 게재합니다.</li>
+                <li>이용자는 <a href="https://adssettings.google.com/authenticated" target="_blank" rel="noopener">구글 광고
+                        설정</a>에서 맞춤 광고를 거부할 수 있습니다.</li>
+                <li>또는 <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info</a>를 통해
+                    제3자 쿠키 사용을 중지할 수 있습니다.</li>
+            </ul>
+        </div>
 
-    <h2>3. 쿠키(Cookie)의 운용 및 거부</h2>
-    <p>이용자는 쿠키 설치에 대한 선택권을 가지고 있습니다. 웹 브라우저 상단의 [설정] > [개인정보 및 보안] 메뉴에서 쿠키 저장을 거부할 수 있습니다. 단, 쿠키 저장을 거부할 경우 일부 서비스 이용에
-        어려움이 있을 수 있습니다.</p>
+        <div class="privacy-section">
+            <h2>🍪 3. 쿠키(Cookie)의 운용 및 거부</h2>
+            <p>이용자는 쿠키 설치에 대한 선택권을 가지고 있습니다. 웹 브라우저 상단의 <strong>[설정] › [개인정보 및 보안]</strong> 메뉴에서 쿠키 저장 여부를 직접 설정할 수
+                있습니다.</p>
+            <p>단, 쿠키 저장을 거부할 경우 댓글 작성 등 일부 기능 이용에 제한이 생길 수 있습니다.</p>
+        </div>
 
-    <h2>4. 문의처</h2>
-    <p>본 방침에 대한 문의사항은 아래 이메일로 연락 주시기 바랍니다.<br>
-        이메일: cadilrak@gmail.com</p>
+        <div class="privacy-section">
+            <h2>🔗 4. 제3자 서비스 이용</h2>
+            <p>본 사이트는 아래 제3자 서비스를 활용하고 있으며, 각 서비스의 개인정보처리방침이 별도로 적용됩니다.</p>
+            <ul>
+                <li><strong>Firebase (Google LLC)</strong>: 댓글 저장 및 조회수 기록</li>
+                <li><strong>Google Analytics</strong>: 방문 통계 분석 (익명 데이터)</li>
+                <li><strong>Google AdSense</strong>: 광고 게재</li>
+            </ul>
+        </div>
 
-    <p><em>시행일자: 2026년 1월 1일</em></p>
+        <div class="privacy-section">
+            <h2>✏️ 5. 방침의 변경</h2>
+            <p>본 개인정보처리방침은 법령·정책 변동 또는 서비스 변경에 따라 내용이 변경될 수 있습니다. 변경 시 시행일자와 함께 본 페이지에 공지합니다.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>📬 6. 문의처</h2>
+            <p>본 방침에 대한 문의사항은 아래 이메일로 연락해 주세요.</p>
+            <p>✉️ 이메일: <a href="mailto:cadilrak@gmail.com">cadilrak@gmail.com</a></p>
+        </div>
+
+        <p class="privacy-date">© 2026 심심센터 (Simsim Center). All rights reserved.</p>
+    </div>
+
+    <footer class="blog-footer">
+        <div class="footer-inner">
+            <div class="footer-bottom">
+                <p>© 2026 심심센터 (Simsim Center). All rights reserved. | <a href="/privacy.html">개인정보처리방침</a> | <a
+                        href="/about.html">소개</a></p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
